@@ -3,28 +3,26 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:WPFPractice"
+        xmlns:local="clr-namespace:WPFPractice.ViewModel"
         xmlns:col="clr-namespace:System.Collections;assembly=mscorlib"
-        xmlns:sys="clr-namespace:System;assembly=mscorlib"
-        xmlns:vm ="clr-namespace:WPFPractice.ViewModel"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"        
         mc:Ignorable="d"
+        
         Title="Дополнительные параметры" MinHeight="450" MinWidth="450"
         Background="#303030">
     <Window.DataContext>
-        <vm:MainWindowViewModel>
-            
-        </vm:MainWindowViewModel>
+        <local:MainWindowViewModel/>
     </Window.DataContext>
-    <Window.CommandBindings>
-        
-    </Window.CommandBindings>
+    <Window.InputBindings>
+        <KeyBinding Key="S" Modifiers="Ctrl" Command="{Binding SaveCommand}"/>
+    </Window.InputBindings>
     <DockPanel >
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_Файл">
                 <MenuItem Command="ApplicationCommands.Open" Header="Открыть"/>
-                <MenuItem Command="{Binding SaveCommand}" Header="Сохранить"/>
+                <MenuItem Command="{Binding SaveCommand}" Header="Сохранить" InputGestureText="Ctrl+S"/>
                 <Separator/>
-                <MenuItem Command="ApplicationCommands.Close" Header="Закрыть"
+                <MenuItem Command="{Binding CloseAWindow}" Header="Закрыть"
                           InputGestureText="Alt+F4"/>
             </MenuItem>
             <MenuItem Header="_Изменить">
@@ -136,7 +134,7 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridComboBoxColumn Header="Тип" Width="200">
+                        <DataGridComboBoxColumn Header="Тип" Width="200" ItemsSource="{Binding Types}">
                             <!--<DataGridComboBoxColumn.ItemsSource>
                                 <col:ArrayList>
                                     <sys:String>Простая строка</sys:String>

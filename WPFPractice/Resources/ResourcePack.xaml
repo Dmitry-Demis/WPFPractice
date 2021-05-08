@@ -7,4 +7,11 @@
     <Style TargetType="{x:Type DataGrid}">
         <Setter Property="Background" Value="{StaticResource ControlLightBackground}"/>
     </Style>
+    <Style x:Key="BasicButtonStyle" TargetType="{x:Type Button}">
+        <Setter Property="Width" Value="Auto"/>
+        <Setter Property="Margin" Value="5"/>
+        <Setter Property="Padding" Value="5"/>
+        <Setter Property="FontSize" Value="14"/>
+       
+    </Style>
 </ResourceDictionary>

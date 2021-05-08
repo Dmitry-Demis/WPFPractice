@@ -11,6 +11,7 @@ using WPFPractice;
 using System.Windows.Controls;
 using Microsoft.Win32;
 using System.IO;
+using System.Windows;
 
 namespace WPFPractice.ViewModel
 {
@@ -79,6 +80,32 @@ namespace WPFPractice.ViewModel
                     );
             }           
         }
+        private RelayCommand<Parametres> _closeAWindow;
+        public RelayCommand<Parametres> CloseAWindow
+        {
+            get
+            {
+                return _closeAWindow ?? (_closeAWindow =
+                    new RelayCommand<Parametres>
+                    (obj =>
+                    {
+                        string msg = "Сохранить и выйти?";
+                        MessageBoxResult result = MessageBox.Show(msg, "Закрытие приложения", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
+                        if (result == MessageBoxResult.Yes)
+                        {
+                            SaveWithoutDialog("result.csv");
+                        }
+                        else
+                        {
+                            
+                        }
+                        OnPropertyChanged(nameof(CloseAWindow));
+                    }
+                    )
+                    );
+            }
+        }
+
         private RelayCommand<Parametres> _saveCommand;
         public RelayCommand<Parametres> SaveCommand
         {
@@ -95,25 +122,29 @@ namespace WPFPractice.ViewModel
                         
                         if (true == saveDlg.ShowDialog())
                         {
-                            using (var sw = new StreamWriter(saveDlg.FileName, false, Encoding.UTF8))
-                            {
-                                bool sep = false;
-                                sw.WriteLine("Id; Название");
-                                foreach (var item in AllParametres)
-                                {
-                                    if (sep)
-                                    {
-                                        sw.WriteLine(";");
-                                    }
-                                    sep = true;
-                                    sw.Write($"{item.Id}; {item.NameOfParametre}");
-                                }
-                            }
+                            SaveWithoutDialog(saveDlg.FileName);
                         }
                         OnPropertyChanged(nameof(SaveCommand));
                     }
                     )
                     );
+            }
+        }
+        private void SaveWithoutDialog(string fileName)
+        {
+            using (var sw = new StreamWriter(fileName, false, Encoding.UTF8))
+            {
+                bool sep = false;
+                sw.WriteLine("Id; Название");
+                foreach (var item in AllParametres)
+                {
+                    if (sep)
+                    {
+                        sw.WriteLine(";");
+                    }
+                    sep = true;
+                    sw.Write($"{item.Id}; {item.NameOfParametre}");
+                }
             }
         }
         public RelayCommand<Parametres> DeleteCommand

@@ -1,0 +1,40 @@
+﻿<Window x:Class="WPFPractice.View.ListOfData"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:WPFPractice.ViewModel"
+        mc:Ignorable="d"
+        Title="ListOfData" Height="450" Width="450">
+    <Window.DataContext>
+        <local:ListOfDataViewModel/>
+    </Window.DataContext>
+    <DockPanel>
+        <TextBlock DockPanel.Dock="Top" Text="Строки:" Margin="10 20"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="1*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Column="1" Grid.Row="0">
+                <Button x:Name="btnUp" Content="Вверх" Style="{StaticResource BasicButtonStyle}"/>
+                <Button x:Name="btnDown" Content="Вниз" Style="{StaticResource BasicButtonStyle}"/>
+                <Button x:Name="btnDelete" Content="Удалить" Style="{StaticResource BasicButtonStyle}"/>
+                <Button x:Name="btnAdd" Content="Добавить..." Style="{StaticResource BasicButtonStyle}"/>
+                <Button x:Name="btnChange" Content="Изменить..." Style="{StaticResource BasicButtonStyle}"/>                
+            </StackPanel>
+            <StackPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Bottom">
+                <Button x:Name="btnOK" Content="OK" Style="{StaticResource BasicButtonStyle}"/>
+                <Button x:Name="btnCancel" Content="Отмена" Style="{StaticResource BasicButtonStyle}"/>
+            </StackPanel>
+            <ListBox Grid.Column="0" Grid.RowSpan="2" Margin="5" 
+                     ItemsSource="{Binding Types}">
+            </ListBox>
+        </Grid>
+    </DockPanel>
+    
+</Window>

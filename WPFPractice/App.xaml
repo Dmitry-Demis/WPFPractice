@@ -7,7 +7,7 @@
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="Resources/Brushes.xaml"/>
-                <ResourceDictionary Source="Resources/ResourcePack.xaml"/>
+                <ResourceDictionary Source="/Resources/ResourcePack.xaml"/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
