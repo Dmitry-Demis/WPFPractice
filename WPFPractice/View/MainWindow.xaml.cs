@@ -13,6 +13,8 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using WPFPractice.Model;
+using WPFPractice.ViewModel;
 
 namespace WPFPractice.View
 {
@@ -24,27 +26,9 @@ namespace WPFPractice.View
         public MainWindow()
         {
             InitializeComponent();
+            //DataContext = new MainWindowViewModel(new DefaultDialogService(), new JsonFileService());
         }
 
-        private void CommandBinding_Executed(object sender, ExecutedRoutedEventArgs e)
-        {
-
-        }
-
-        private void SaveCmdExecuted(object sender, ExecutedRoutedEventArgs e)
-        {
-           
-        }
-
-        private void CommandBinding_CanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-
-        }
-
-        private void SaveCmdCanExecute(object sender, CanExecuteRoutedEventArgs e)
-        {
-            e.CanExecute = true;
-        }
     }
    
 }

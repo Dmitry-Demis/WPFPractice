@@ -15,11 +15,12 @@
     </Window.DataContext>
     <Window.InputBindings>
         <KeyBinding Key="S" Modifiers="Ctrl" Command="{Binding SaveCommand}"/>
+        <KeyBinding Key="O" Modifiers="Ctrl" Command="{Binding OpenCommand}"/>
     </Window.InputBindings>
     <DockPanel >
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_Файл">
-                <MenuItem Command="ApplicationCommands.Open" Header="Открыть"/>
+                <MenuItem Command="{Binding OpenCommand}" Header="Открыть" InputGestureText="Ctrl+O"/>
                 <MenuItem Command="{Binding SaveCommand}" Header="Сохранить" InputGestureText="Ctrl+S"/>
                 <Separator/>
                 <MenuItem Command="{Binding CloseAWindow}" Header="Закрыть"
@@ -150,7 +151,7 @@
                                     </Setter>
                                     <Setter Property="ItemsSource"
                                             Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.Types}"/>
-                                    <Setter Property="SelectedIndex" Value="0"/>
+                                    <Setter Property="SelectedIndex" Value="0"/>                                   
                                 </Style>
                             </DataGridComboBoxColumn.ElementStyle>
                         </DataGridComboBoxColumn>

@@ -1,22 +1,81 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Collections.ObjectModel;
+using System;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using WPFPractice.Model;
 using WPFPractice.Cmds;
-using WPFPractice.View;
-using WPFPractice;
-using System.Windows.Controls;
-using Microsoft.Win32;
-using System.IO;
-using System.Windows;
 
 namespace WPFPractice.ViewModel
 {
     public class MainWindowViewModel : ViewModelBase
     {
+
+        IFileService fileService = new JsonFileService();
+        IDialogService dialogService = new DefaultDialogService();
+
+        private RelayCommand<Parametres> _saveCommand;
+        public RelayCommand<Parametres> SaveCommand
+        {
+            get
+            {
+                return _saveCommand ?? (_saveCommand = new RelayCommand<Parametres>(obj =>
+                {
+                    try
+                    {
+                        if (dialogService.SaveFileDialog() == true)
+                        {
+                            fileService.Save(dialogService.FilePath, AllParametres.ToList());
+                            dialogService.ShowMessage("Файл сохранен");
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        dialogService.ShowMessage(ex.Message);
+                    }
+                }));
+            }
+        }
+        private RelayCommand<Parametres> _openCommand;
+        public RelayCommand<Parametres> OpenCommand
+        {
+            get
+            {
+                return _openCommand ??
+                  (_openCommand = new RelayCommand<Parametres>(obj =>
+                  {
+                      try
+                      {
+                          if (dialogService.OpenFileDialog() == true)
+                          {
+                              var phones = fileService.Open(dialogService.FilePath);
+                              AllParametres.Clear();
+                              foreach (var p in phones)
+                                  AllParametres.Add(p);
+                              dialogService.ShowMessage("Файл открыт");
+                          }
+                      }
+                      catch (Exception ex)
+                      {
+                          dialogService.ShowMessage(ex.Message);
+                      }
+                  }));
+            }
+        }
+
+        public MainWindowViewModel(IDialogService dialogService, IFileService fileService)
+        {
+            this.dialogService = dialogService;
+            this.fileService = fileService;
+        }
+
+
+
+
+
+
+
+
         private Parametres _currentParametres;
         private string _selectedType;
         public string SelectedType {
@@ -79,7 +138,6 @@ namespace WPFPractice.ViewModel
         //adding a new string to the table
         private RelayCommand<Parametres> addCommand;
         private RelayCommand<Parametres> deleteCommand;
-                
         public RelayCommand<Parametres> AddCommand
         {
             get
@@ -112,74 +170,8 @@ namespace WPFPractice.ViewModel
                 AllParametres[i].Id = k[i];
             }
             
-        }
-        private RelayCommand<Parametres> _closeAWindow;
-        public RelayCommand<Parametres> CloseAWindow
-        {
-            get
-            {
-                return _closeAWindow ?? (_closeAWindow =
-                    new RelayCommand<Parametres>
-                    (obj =>
-                    {
-                        string msg = "Сохранить и выйти?";
-                        MessageBoxResult result = MessageBox.Show(msg, "Закрытие приложения", MessageBoxButton.YesNoCancel, MessageBoxImage.Question);
-                        if (result == MessageBoxResult.Yes)
-                        {
-                            SaveWithoutDialog("result.csv");
-                        }
-                        else
-                        {
-                            
-                        }
-                        OnPropertyChanged(nameof(CloseAWindow));
-                    }
-                    )
-                    );
-            }
-        }
-
-        private RelayCommand<Parametres> _saveCommand;
-        public RelayCommand<Parametres> SaveCommand
-        {
-            get
-            {
-                return _saveCommand ?? (_saveCommand =
-                    new RelayCommand<Parametres>
-                    (obj =>
-                    {
-                        var saveDlg = new SaveFileDialog ();
-                        saveDlg.Filter = "Comma-Separated Values|*.csv";
-                        saveDlg.Title = "Сохраняем csv файл";
-                        saveDlg.FileName = "result.csv";
-                        
-                        if (true == saveDlg.ShowDialog())
-                        {
-                            SaveWithoutDialog(saveDlg.FileName);
-                        }
-                        OnPropertyChanged(nameof(SaveCommand));
-                    }
-                    )
-                    );
-            }
-        }
-        private void SaveWithoutDialog(string fileName)
-        {
-            using (var sw = new StreamWriter(fileName, false, Encoding.UTF8))
-            {
-                bool sep = false;
-                sw.WriteLine("Id; Название; Тип; Список");
-                foreach (var item in AllParametres)
-                {
-                    if (sep)
-                    {
-                        sw.WriteLine(";");
-                    }
-                    sep = true;
-                    sw.Write($"{item.Id}; {item.NameOfParametre}; ");
-                }
-            }
-        }
+        }                   
+       
         public RelayCommand<Parametres> DeleteCommand
         {
             get
