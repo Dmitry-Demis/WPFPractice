@@ -121,7 +121,8 @@
                           Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Window}}"
                           CanUserAddRows="False"
                           ItemsSource="{Binding AllParametres}"
-                          SelectedValue="{Binding Path=CurrentParametres}">
+                          SelectedValue="{Binding Path=CurrentParametres}"
+                          >
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Id" IsReadOnly="True" Binding="{Binding Id}"
                                             SortMemberPath="Id"/>
