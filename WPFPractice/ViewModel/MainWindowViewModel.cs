@@ -18,6 +18,15 @@ namespace WPFPractice.ViewModel
     public class MainWindowViewModel : ViewModelBase
     {
         private Parametres _currentParametres;
+        private string _selectedType;
+        public string SelectedType {
+            get => _selectedType;
+            set
+            {
+                _selectedType = value;
+                OnPropertyChanged(nameof(SelectedType));
+            }
+        }
         public ObservableCollection<string> _types;
         public ObservableCollection<string> Types
         {
@@ -79,14 +88,30 @@ namespace WPFPractice.ViewModel
                     new RelayCommand<Parametres>
                     (obj=>
                         {
-                            Parametres parametres = new Parametres();                            
-                            parametres.NameOfParametre = $"Параметр {parametres.Id}";
+                            Parametres parametres = new Parametres();
+                            AllParametres.Insert(AllParametres.Count, parametres);
                             SelectedParametres = parametres;
-                            AllParametres.Insert(AllParametres.Count, parametres);                           
+                            ChangeId();
+                            parametres.NameOfParametre = $"Параметр {parametres.Id}";
+                            OnPropertyChanged(nameof(AddCommand));
+                            OnPropertyChanged(nameof(AllParametres));
+
                         }
                     )
                     );
             }           
+        }
+        private int maxID = 1;
+        private void ChangeId()
+        {
+            maxID = 1;
+            var k = AllParametres.Select(x => x.Id = maxID++).ToArray();
+            
+            for (var i = 0; i < AllParametres.Count; i++)
+            {
+                AllParametres[i].Id = k[i];
+            }
+            
         }
         private RelayCommand<Parametres> _closeAWindow;
         public RelayCommand<Parametres> CloseAWindow
@@ -143,7 +168,7 @@ namespace WPFPractice.ViewModel
             using (var sw = new StreamWriter(fileName, false, Encoding.UTF8))
             {
                 bool sep = false;
-                sw.WriteLine("Id; Название");
+                sw.WriteLine("Id; Название; Тип; Список");
                 foreach (var item in AllParametres)
                 {
                     if (sep)
@@ -151,7 +176,7 @@ namespace WPFPractice.ViewModel
                         sw.WriteLine(";");
                     }
                     sep = true;
-                    sw.Write($"{item.Id}; {item.NameOfParametre}");
+                    sw.Write($"{item.Id}; {item.NameOfParametre}; ");
                 }
             }
         }
@@ -173,7 +198,9 @@ namespace WPFPractice.ViewModel
                             _currentParametres = AllParametres.ElementAtOrDefault(index - 1);
                         else
                             _currentParametres = AllParametres.FirstOrDefault();
-
+                        ChangeId();
+                        OnPropertyChanged(nameof(DeleteCommand));
+                        OnPropertyChanged(nameof(AllParametres));
                     }
                     )
                     );
