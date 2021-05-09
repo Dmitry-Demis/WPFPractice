@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFPractice.ViewModel"
         mc:Ignorable="d"
-        Title="Список" Height="450" Width="450">
+        Title="Список" Height="450" Width="450"
+        Background="#303030">
     <Window.DataContext>
         <local:ListOfDataViewModel/>
     </Window.DataContext>

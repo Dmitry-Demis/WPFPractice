@@ -1692,7 +1692,16 @@
             </Setter.Value>
         </Setter>
     </Style>
-
+    
+<!--TextBlock-->
+    
+    <Style TargetType="{x:Type TextBlock}">
+        <Setter Property="TextWrapping" Value="NoWrap"/>
+        <Setter Property="TextTrimming" Value="CharacterEllipsis"/>
+        <Setter Property="TextAlignment" Value="Left"/>
+        <Setter Property="Foreground" Value="{StaticResource ControlForeground}"/>
+    </Style>
+    
     <Style x:Key="ExpanderRightHeaderStyle" TargetType="{x:Type ToggleButton}">
         <Setter Property="Template">
             <Setter.Value>

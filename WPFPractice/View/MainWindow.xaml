@@ -118,6 +118,7 @@
         <Grid Margin="5">
             <ScrollViewer>
                 <DataGrid x:Name="dataBase" AutoGenerateColumns="False" Margin="5"
+                          Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Window}}"
                           CanUserAddRows="False"
                           ItemsSource="{Binding AllParametres}"
                           SelectedValue="{Binding Path=CurrentParametres}">
@@ -155,15 +156,26 @@
                                 </Style>
                             </DataGridComboBoxColumn.ElementStyle>
                         </DataGridComboBoxColumn>
-                        <DataGridTextColumn Header="" x:Name="tbList">
+                        <DataGridTemplateColumn Header="">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button Content="Список..." 
+                                            Command="{Binding Path=DataContext.OpenAnotherWindow, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
+                                            >
+                                        
+                                    </Button>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                        <!--<DataGridTextColumn Header="" x:Name="tbList">
                             <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="{x:Type TextBlock}">
+                                <Style TargetType="{x:Type Button}">
                                     <Setter Property="TextWrapping" Value="Wrap"/>
                                     <Setter Property="HorizontalAlignment" Value="Stretch"/>
                                     <Setter Property="Text" Value="Список..."/>
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
+                        </DataGridTextColumn>-->
                     </DataGrid.Columns>
                 </DataGrid>
             </ScrollViewer>            

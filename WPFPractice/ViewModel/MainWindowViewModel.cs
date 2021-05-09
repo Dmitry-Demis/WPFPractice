@@ -5,6 +5,8 @@ using System;
 using System.Linq;
 using WPFPractice.Model;
 using WPFPractice.Cmds;
+using System.Windows.Controls.Primitives;
+using WPFPractice.View;
 
 namespace WPFPractice.ViewModel
 {
@@ -68,7 +70,21 @@ namespace WPFPractice.ViewModel
             this.dialogService = dialogService;
             this.fileService = fileService;
         }
-
+        private RelayCommand _openAnotherWindow;
+        public RelayCommand OpenAnotherWindow
+        {
+            get
+            {
+                return _openAnotherWindow ??
+                    (
+                    _openAnotherWindow = new RelayCommand(()=>
+                    {
+                        ListOfData listOfData = new ListOfData();
+                        listOfData.Show();
+                    }
+                    ));
+            }
+        }
 
 
 
