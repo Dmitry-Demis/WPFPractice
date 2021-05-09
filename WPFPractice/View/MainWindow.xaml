@@ -6,8 +6,8 @@
         xmlns:local="clr-namespace:WPFPractice.ViewModel"
         xmlns:col="clr-namespace:System.Collections;assembly=mscorlib"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"        
-        mc:Ignorable="d"
-        
+        mc:Ignorable="d"        
+      
         Title="Дополнительные параметры" MinHeight="450" MinWidth="450"
         Background="#303030">
     <Window.DataContext>
@@ -32,7 +32,7 @@
             </MenuItem>
         </Menu>
         <ToolBar DockPanel.Dock="Top">
-            <Button x:Name="btnAddARowToATable" ToolTip="Добавить элемент в таблицу" Margin="5"
+            <Button x:Name="btnAddARowToATable" ToolTip="Добавить элемент в таблицу"
                     Command="{Binding AddCommand}">
                 <Path Data="M 0,0 L 0,27 27,27 27,0 z" Clip="M 9,0 L 9,9 0,9 0,18 9,18 9,27 18,27 18,18 27,18 27,9 18,9 18,0 z">
                     <Path.Fill>
@@ -45,8 +45,7 @@
                     </Path.Fill>
                 </Path>
             </Button>
-            <Button RenderTransformOrigin="0.5, 0.5" Height="27" ToolTip="Подняться" Margin="5"
-                    Command="{Binding SaveCommand}">
+            <Button RenderTransformOrigin="0.5, 0.5" Height="27" ToolTip="Подняться"                    Command="{Binding SaveCommand}">
                 <Path Data="F1 M 0,0 C 0,0 -0.16,-0.16 -0.16,-0.16 L -0.32,-0.32 -0.32,-7.52 C -0.32,-11.36 -0.32,-14.56 -0.32,-14.56
 		 -0.32,-14.56 -2.08,-14.56 -4,-14.56 -7.52,-14.72 -7.68,-14.72 -7.84,-14.72 -8,-14.88 -8.16,-15.2 -8,-15.36
 		 -8,-15.36 -7.52,-15.84 -6.88,-16.48 -5.12,-17.92 3.36,-25.44 4.32,-26.24 5.28,-27.04 5.28,-27.04 5.6,-26.88
@@ -69,7 +68,7 @@
                     </Path.Fill>
                 </Path>
             </Button>
-            <Button RenderTransformOrigin="0.5, 0.5" Height="27" ToolTip="Спуститься" Margin="5">
+            <Button RenderTransformOrigin="0.5, 0.5" Height="27" ToolTip="Спуститься">
                 <Path Data="F1 M 0,0 C 0,0 -0.16,-0.16 -0.16,-0.16 L -0.32,-0.32 -0.32,-7.52 C -0.32,-11.36 -0.32,-14.56 -0.32,-14.56
 		 -0.32,-14.56 -2.08,-14.56 -4,-14.56 -7.52,-14.72 -7.68,-14.72 -7.84,-14.72 -8,-14.88 -8.16,-15.2 -8,-15.36
 		 -8,-15.36 -7.52,-15.84 -6.88,-16.48 -5.12,-17.92 3.36,-25.44 4.32,-26.24 5.28,-27.04 5.28,-27.04 5.6,-26.88
@@ -96,7 +95,7 @@
 
             </Button>
             <Separator />
-            <Button x:Name="btnDeleteARowToATable" ToolTip="Удалить элемент из таблицы" Margin="5"
+            <Button x:Name="btnDeleteARowToATable" ToolTip="Удалить элемент из таблицы"
                     Command="{Binding DeleteCommand}">
                 <Path Data="M 0,0 L 0,27 27,27 27,0 z" Clip="M 9,0 L 9,9 0,9 0,18 9,18 9,27 18,27 18,18 27,18 27,9 18,9 18,0 z" RenderTransformOrigin="0.5,0.5">
                     <Path.RenderTransform>
@@ -119,10 +118,8 @@
             <ScrollViewer>
                 <DataGrid x:Name="dataBase" AutoGenerateColumns="False" Margin="5"
                           CanUserAddRows="False"
-                          ItemsSource="{Binding Path=AllParametres}"
-                          SelectedValue="{Binding Path=CurrentParametres}"
-                          AlternatingRowBackground="AliceBlue"
-                          >
+                          ItemsSource="{Binding AllParametres}"
+                          SelectedValue="{Binding Path=CurrentParametres}">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Id" IsReadOnly="True" Binding="{Binding Id}"
                                             SortMemberPath="Id"/>
@@ -134,16 +131,36 @@
                                 </Style>
                             </DataGridTextColumn.ElementStyle>
                         </DataGridTextColumn>
-                        <DataGridComboBoxColumn Header="Тип" Width="200" ItemsSource="{Binding Types}">
-                            <!--<DataGridComboBoxColumn.ItemsSource>
+                        <DataGridComboBoxColumn Header="Тип" Width="140">
+                            <DataGridComboBoxColumn.EditingElementStyle>
+                                <Style TargetType="{x:Type ComboBox}">
+                                    <Setter Property="ItemsSource"
+                                            Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.Types}"/>
+                                </Style>
+                            </DataGridComboBoxColumn.EditingElementStyle>
+                                <!--<DataGridComboBoxColumn.ItemsSource>
                                 <col:ArrayList>
-                                    <sys:String>Простая строка</sys:String>
+                                    <sys:String >Простая строка</sys:String>
                                     <sys:String>Строка с историей</sys:String>
                                     <sys:String>Значение из списка</sys:String>
-                                    <sys:String>Набор значений из списка</sys:String>
+                                    <sys:String>Набор значений из списка</sys:String>                                   
                                 </col:ArrayList>
-                            </DataGridComboBoxColumn.ItemsSource>-->                            
-                        </DataGridComboBoxColumn>                       
+                            </DataGridComboBoxColumn.ItemsSource>-->
+                            <DataGridComboBoxColumn.ElementStyle>
+                                <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
+                                    <Setter Property="Background">
+                                        <Setter.Value>
+                                            <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
+                                                <GradientStop Color="#FF606060" Offset="0"/>
+                                                <GradientStop Color="#FF2F2F2F" Offset="1"/>
+                                            </LinearGradientBrush>
+                                        </Setter.Value>
+                                    </Setter>
+                                    <Setter Property="ItemsSource"
+                                            Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.Types}"/>
+                                </Style>
+                            </DataGridComboBoxColumn.ElementStyle>
+                        </DataGridComboBoxColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </ScrollViewer>            

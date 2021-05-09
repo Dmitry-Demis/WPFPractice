@@ -18,18 +18,26 @@ namespace WPFPractice.ViewModel
     public class MainWindowViewModel : ViewModelBase
     {
         private Parametres _currentParametres;
-        public ObservableCollection<string> Types 
+        public ObservableCollection<string> _types;
+        public ObservableCollection<string> Types
         {
-            get;
+            get
+            {
+                return _types;
+            }
+            set
+            {
+                _types = value;
+                OnPropertyChanged(nameof(Types));
+            }
         }
         public MainWindowViewModel()
         {
-            Types = new ObservableCollection<string>();
-            Types.Add("Простая строка");
-            Types.Add("Строка с историей");
-            Types.Add("Значение из списка");
-            Types.Add("Набор значений из списка");
-            OnPropertyChanged(nameof(Types));
+            _types = new ObservableCollection<string>();
+            _types.Add("Простая строка");
+            _types.Add("Строка с историей");
+            _types.Add("Значение из списка");
+            _types.Add("Набор значений из списка");
         }
         public Parametres CurrentParametres
         {

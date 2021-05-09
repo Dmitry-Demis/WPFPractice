@@ -13,10 +13,10 @@ namespace WPFPractice.ViewModel
         {
             get;
             set;
-        }
+        } = new ObservableCollection<string>();
         public ListOfDataViewModel()
         {
-            Types = new ObservableCollection<string>();
+           
             int v = 1;
             Types.Add($"Значение {v++}");
             Types.Add($"Значение {v++}");

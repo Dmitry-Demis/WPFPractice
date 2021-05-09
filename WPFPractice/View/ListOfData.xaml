@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFPractice.ViewModel"
         mc:Ignorable="d"
-        Title="ListOfData" Height="450" Width="450">
+        Title="Список" Height="450" Width="450">
     <Window.DataContext>
         <local:ListOfDataViewModel/>
     </Window.DataContext>
@@ -21,15 +21,15 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <StackPanel Grid.Column="1" Grid.Row="0">
-                <Button x:Name="btnUp" Content="Вверх" Style="{StaticResource BasicButtonStyle}"/>
-                <Button x:Name="btnDown" Content="Вниз" Style="{StaticResource BasicButtonStyle}"/>
-                <Button x:Name="btnDelete" Content="Удалить" Style="{StaticResource BasicButtonStyle}"/>
-                <Button x:Name="btnAdd" Content="Добавить..." Style="{StaticResource BasicButtonStyle}"/>
-                <Button x:Name="btnChange" Content="Изменить..." Style="{StaticResource BasicButtonStyle}"/>                
+                <Button x:Name="btnUp" Content="Вверх"/>
+                <Button x:Name="btnDown" Content="Вниз" />
+                <Button x:Name="btnDelete" Content="Удалить"/>
+                <Button x:Name="btnAdd" Content="Добавить..."/>
+                <Button x:Name="btnChange" Content="Изменить..."/>                
             </StackPanel>
             <StackPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Bottom">
-                <Button x:Name="btnOK" Content="OK" Style="{StaticResource BasicButtonStyle}"/>
-                <Button x:Name="btnCancel" Content="Отмена" Style="{StaticResource BasicButtonStyle}"/>
+                <Button x:Name="btnOK" Content="OK" />
+                <Button x:Name="btnCancel" Content="Отмена"/>
             </StackPanel>
             <ListBox Grid.Column="0" Grid.RowSpan="2" Margin="5" 
                      ItemsSource="{Binding Types}">
