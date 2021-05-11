@@ -4,8 +4,7 @@
                     xmlns:controls="clr-namespace:System.Windows;assembly=PresentationFramework">
 
     <!-- Brushes -->
-
-    <SolidColorBrush x:Key="ControlForeground" Color="Cyan" />
+    <SolidColorBrush x:Key="ControlForeground" Color="LightBlue" />
     <SolidColorBrush x:Key="ControlForegroundWhite" Color="#FFEEEFFF" />
     <SolidColorBrush x:Key="BorderBrushVisual" Color="Transparent"/>
     <SolidColorBrush x:Key="ControlPressedVisualBrush" Color="Transparent"/>
@@ -48,7 +47,7 @@
 
     <LinearGradientBrush x:Key="ControlActiveBorderBrush" StartPoint="0,0.5" EndPoint="1,0.5">
         <GradientStop Color="#FF1D83BE" Offset="0.204" />
-        <GradientStop Color="#FF1ECDA7" Offset="0.864" />
+        <GradientStop Color="#7b68ee" Offset="0.864" />
     </LinearGradientBrush>
 
 
