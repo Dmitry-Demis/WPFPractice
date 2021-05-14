@@ -8,12 +8,13 @@
     <OutputType>WinExe</OutputType>
     <RootNamespace>WPFPractice</RootNamespace>
     <AssemblyName>WPFPractice</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -57,15 +58,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Themes\Brushes.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Themes\Core.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Themes\Icons.xaml">
+    <Page Include="View\AddingOfElementWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -87,12 +80,15 @@
     <Compile Include="Model\DefaultDialogService.cs" />
     <Compile Include="Model\IDialogService.cs" />
     <Compile Include="Model\IFileService.cs" />
-    <Compile Include="Model\Parametres.cs" />
-    <Compile Include="Model\ParametresRepository.cs" />
     <Compile Include="Model\JsonFileService.cs" />
+    <Compile Include="Model\Parameter.cs" />
+    <Compile Include="ViewModel\AddingOfElementWindowViewModel.cs" />
     <Compile Include="ViewModel\ListOfDataViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
     <Compile Include="ViewModel\ViewModelBase.cs" />
+    <Compile Include="View\AddingOfElementWindow.xaml.cs">
+      <DependentUpon>AddingOfElementWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\ListOfData.xaml.cs">
       <DependentUpon>ListOfData.xaml</DependentUpon>
     </Compile>

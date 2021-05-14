@@ -9,21 +9,18 @@
         mc:Ignorable="d"        
       
         Title="Дополнительные параметры" MinHeight="450" MinWidth="450"
-        Background="#303030">
-    <Window.DataContext>
+        >
+    <!--<Window.DataContext>
         <local:MainWindowViewModel/>
-    </Window.DataContext>
-    <Window.InputBindings>
-        <KeyBinding Key="S" Modifiers="Ctrl" Command="{Binding SaveCommand}"/>
-        <KeyBinding Key="O" Modifiers="Ctrl" Command="{Binding OpenCommand}"/>
-    </Window.InputBindings>
+    </Window.DataContext>-->
+   
     <DockPanel >
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_Файл">
-                <MenuItem Command="{Binding OpenCommand}" Header="Открыть" InputGestureText="Ctrl+O"/>
-                <MenuItem Command="{Binding SaveCommand}" Header="Сохранить" InputGestureText="Ctrl+S"/>
+                <MenuItem Header="Открыть" InputGestureText="Ctrl+O"/>
+                <MenuItem  Header="Сохранить" InputGestureText="Ctrl+S"/>
                 <Separator/>
-                <MenuItem Command="{Binding CloseAWindow}" Header="Закрыть"
+                <MenuItem  Header="Закрыть"
                           InputGestureText="Alt+F4"/>
             </MenuItem>
             <MenuItem Header="_Изменить">
@@ -34,7 +31,7 @@
         </Menu>
         <ToolBar DockPanel.Dock="Top">            
             <Button x:Name="btnAddARowToATable" ToolTip="Добавить элемент в таблицу"
-                    Command="{Binding AddCommand}">
+                   Command="{Binding AddItem}">
                 <Path Data="M 0,0 L 0,27 27,27 27,0 z" Clip="M 9,0 L 9,9 0,9 0,18 9,18 9,27 18,27 18,18 27,18 27,9 18,9 18,0 z">
                     <Path.Fill>
                         <LinearGradientBrush>
@@ -97,7 +94,7 @@
             </Button>
             <Separator />
             <Button x:Name="btnDeleteARowToATable" ToolTip="Удалить элемент из таблицы"
-                    Command="{Binding DeleteCommand}">
+                    >
                 <Path Data="M 0,0 L 0,27 27,27 27,0 z" Clip="M 9,0 L 9,9 0,9 0,18 9,18 9,27 18,27 18,18 27,18 27,9 18,9 18,0 z" RenderTransformOrigin="0.5,0.5">
                     <Path.RenderTransform>
                         <TransformGroup>
@@ -117,66 +114,29 @@
         </ToolBar>
         <Grid Margin="5">
             <ScrollViewer>
-                <DataGrid x:Name="dataBase" AutoGenerateColumns="False" Margin="5"
-                          Tag="{Binding DataContext, RelativeSource={RelativeSource AncestorType=Window}}"
-                          CanUserAddRows="False"
-                          ItemsSource="{Binding AllParametres}"
-                          SelectedValue="{Binding Path=CurrentParametres}"
-                          >
+                <DataGrid x:Name="dataBase" AutoGenerateColumns="False" Margin="5">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Id" IsReadOnly="True" Binding="{Binding Id}"
-                                            SortMemberPath="Id"/>
-                        <DataGridTextColumn Header="Название" Width="200" Binding="{Binding NameOfParametre}">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="{x:Type TextBlock}">
-                                    <Setter Property="TextWrapping" Value="Wrap"/>
-                                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>
-                        <DataGridComboBoxColumn Header="Тип" MinWidth="150" Width="Auto" x:Name="dgCbType">
-                            <DataGridComboBoxColumn.EditingElementStyle>
-                                <Style TargetType="{x:Type ComboBox}">
-                                    <Setter Property="ItemsSource"
-                                            Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.Types}"/>
-                                </Style>
-                            </DataGridComboBoxColumn.EditingElementStyle>
-                            <DataGridComboBoxColumn.ElementStyle>
-                                <Style TargetType="{x:Type ComboBox}" BasedOn="{StaticResource {x:Type ComboBox}}">
-                                    <Setter Property="Background">
-                                        <Setter.Value>
-                                            <LinearGradientBrush EndPoint="0,1" StartPoint="0,0">
-                                                <GradientStop Color="#FF606060" Offset="0"/>
-                                                <GradientStop Color="#FF2F2F2F" Offset="1"/>
-                                            </LinearGradientBrush>
-                                        </Setter.Value>
-                                    </Setter>
-                                    <Setter Property="ItemsSource"
-                                            Value="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}, Path=DataContext.Types}"/>
-                                    <Setter Property="SelectedIndex" Value="0"/>                                   
-                                </Style>
-                            </DataGridComboBoxColumn.ElementStyle>
-                        </DataGridComboBoxColumn>
-                        <DataGridTemplateColumn Header="">
+                        <DataGridTextColumn Header="Название" Width="3*" />
+                        <DataGridTemplateColumn Header="Тип" Width="2*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button Content="Список..." 
-                                            Command="{Binding Path=DataContext.OpenAnotherWindow, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}" 
-                                            >
-                                        
-                                    </Button>
+                                    <TextBlock Text="{Binding Path=CurrentElement}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                            <DataGridTemplateColumn.CellEditingTemplate>
+                                <DataTemplate>
+                                    <ComboBox ItemsSource="{Binding Path=DefaultElement}"
+                                              SelectedItem="{Binding Path=CurrentElement, UpdateSourceTrigger=PropertyChanged}"/>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellEditingTemplate>
+                        </DataGridTemplateColumn>
+                        <DataGridTemplateColumn Width="*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <Button/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
-                        <!--<DataGridTextColumn Header="" x:Name="tbList">
-                            <DataGridTextColumn.ElementStyle>
-                                <Style TargetType="{x:Type Button}">
-                                    <Setter Property="TextWrapping" Value="Wrap"/>
-                                    <Setter Property="HorizontalAlignment" Value="Stretch"/>
-                                    <Setter Property="Text" Value="Список..."/>
-                                </Style>
-                            </DataGridTextColumn.ElementStyle>
-                        </DataGridTextColumn>-->
                     </DataGrid.Columns>
                 </DataGrid>
             </ScrollViewer>            

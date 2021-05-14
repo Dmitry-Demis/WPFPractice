@@ -11,7 +11,7 @@
         <local:ListOfDataViewModel/>
     </Window.DataContext>
     <DockPanel>
-        <TextBlock DockPanel.Dock="Top" Text="Строки:" Margin="10 20" Foreground="{StaticResource ControlForegroundWhite}"/>
+        <TextBlock DockPanel.Dock="Top" Text="Строки:" Margin="10 20" />
         <Grid>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="3*"/>

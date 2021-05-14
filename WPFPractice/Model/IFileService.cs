@@ -9,7 +9,6 @@ namespace WPFPractice.Model
 {
     public interface IFileService
     {
-        List<Parametres> Open(string filename);
-        void Save(string filename, List<Parametres> parametresList);
+       
     }
 }
