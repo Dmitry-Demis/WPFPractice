@@ -16,10 +16,7 @@ namespace WPFPractice.ViewModel
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        public MainWindowViewModel()
-        {          
-            
-        }
+      
         public ObservableCollection<Parameter> Parameters { get; set; } = new ObservableCollection<Parameter>();       
         private string _name;
         public string Name
@@ -47,12 +44,13 @@ namespace WPFPractice.ViewModel
             }
         }
 
-        public DataType DefaultItem { get; set; } = DataType.SimpleString;
+        public DataType DefaultItem { get; set; } = DataType.SetFromList;
         public DataType TypesDataType { get; set; }
 
-        private RelayCommand _addItem;
+        
         public string ButtonValueType { get; set; } = "Список...";
-        public bool IsEnabled { get; set; } = false;
+        public bool IsEnabled { get; set; } = true;
+        private RelayCommand _addItem;
         public RelayCommand AddItem
         {
             get
@@ -71,11 +69,10 @@ namespace WPFPractice.ViewModel
                           parameter.Name = viewModel.Name;
                           parameter.Types = new DataType();
                           parameter.Strings = new List<string>();
-                          parameter.DefaultItem = DefaultItem;
-                          parameter.CurrentItem = parameter;
-                          Parameters.Add(parameter);
+                          CurrentItem = parameter;
+                          Parameters.Add(CurrentItem);
                          
-                      }                      
+                      }
                   }));
             } 
         }
@@ -111,7 +108,7 @@ namespace WPFPractice.ViewModel
             }
         }
 
-        public RelayCommand _upCommand;
+        private RelayCommand _upCommand;
 
         public RelayCommand UpCommand
         {
@@ -133,7 +130,7 @@ namespace WPFPractice.ViewModel
                            }));
             }
         }
-        public RelayCommand _downCommand;
+        private RelayCommand _downCommand;
 
         public RelayCommand DownCommand
         {
@@ -156,11 +153,44 @@ namespace WPFPractice.ViewModel
             }
         }
 
+        //TODO: Реализовать команду открытия нового окна на основе значений DataGrid [Сложности с привязкой к различным данным]
+
+        private RelayCommand _windowOfParameters;
+        public RelayCommand WindowOfParameters
+        {
+            get
+            {
+                return _windowOfParameters ??
+                       (_windowOfParameters = new RelayCommand(() =>
+                           {
+
+                               ListOfDataViewModel viewModel = new ListOfDataViewModel();
+                               ListOfData window = new ListOfData { DataContext = viewModel };
+                               window.ShowDialog();
+
+                           },
+                           () =>
+                           {
+                               //var curr = CurrentItem;
+                               //if (curr == null) return false;
+                               //if (curr.Types==DataType.SetFromList || curr.Types == DataType.ValueFromList)
+                               //{
+                               //    IsEnabled = true;
+                               //}
+                               return IsEnabled;
+                           }));
+            }
+           
+        }
+
     }
 
+    /// <summary>
+    /// Конвертер, который преобразует enum в строки для отображения
+    /// </summary>
     public class ConvertEnumToString : IValueConverter
     {
-        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        public object Convert(object value, Type targetType = null, object parameter = null, CultureInfo culture = null)
         {
             if (value != null)
             {

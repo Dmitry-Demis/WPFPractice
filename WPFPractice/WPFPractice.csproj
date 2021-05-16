@@ -78,6 +78,7 @@
     <Compile Include="Cmds\RelayCommand.cs" />
     <Compile Include="Cmds\RelayCommandT.cs" />
     <Compile Include="Model\DefaultDialogService.cs" />
+    <Compile Include="Model\ICloseWindows.cs" />
     <Compile Include="Model\IDialogService.cs" />
     <Compile Include="Model\IFileService.cs" />
     <Compile Include="Model\JsonFileService.cs" />

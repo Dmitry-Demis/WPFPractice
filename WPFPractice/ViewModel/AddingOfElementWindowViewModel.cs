@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using WPFPractice.Cmds;
+using WPFPractice.Model;
 using WPFPractice.View;
 
 namespace WPFPractice.ViewModel
@@ -37,9 +38,5 @@ namespace WPFPractice.ViewModel
             => _cancelCommand ?? (_cancelCommand = new RelayCommand(CloseWindow));
         public bool CanClose() => true;
     }
-    public interface ICloseWindows
-    {
-        Action Close { get; set; }
-        bool CanClose();
-    }
+   
 }

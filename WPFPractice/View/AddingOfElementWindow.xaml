@@ -11,10 +11,13 @@
     <Window.DataContext>
         <local:AddingOfElementWindowViewModel/>
     </Window.DataContext>
-    
+    <Window.InputBindings>
+        <KeyBinding Key="Enter"  Command="{Binding CloseCommand}"/>
+        <KeyBinding Key="Escape"  Command="{Binding CancelCommand}"/>
+    </Window.InputBindings>
     <StackPanel Margin="5">
         <TextBlock Text="Введите строку:" Margin="5"/>
-        <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
         <TextBlock Text="Поле должно быть не пустым" Foreground="Red"/>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">
             <Button Content="OК" Margin="5" Padding="5" Width="70" Command="{Binding CloseCommand}"

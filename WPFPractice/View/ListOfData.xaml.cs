@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using WPFPractice.Model;
 
 namespace WPFPractice.View
 {
@@ -22,6 +23,22 @@ namespace WPFPractice.View
         public ListOfData()
         {
             InitializeComponent();
+            Loaded += ListOfData_Loaded;
+        }
+
+        private void ListOfData_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ICloseWindows vm)
+            {
+                vm.Close += () =>
+                {
+                    this.Close();
+                };
+                Closing += (s, ex) =>
+                {
+                    ex.Cancel = !vm.CanClose();
+                };
+            }
         }
     }
 }

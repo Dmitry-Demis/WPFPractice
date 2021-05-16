@@ -6,7 +6,11 @@
         xmlns:local="clr-namespace:WPFPractice.ViewModel"
         mc:Ignorable="d"
         Title="Список" Height="450" Width="450"
-        Background="#303030">
+       >
+    <Window.InputBindings>
+        <KeyBinding Key="Enter"  Command="{Binding CloseCommand}"/>
+        <KeyBinding Key="Escape"  Command="{Binding CancelCommand}"/>
+    </Window.InputBindings>
     <Window.DataContext>
         <local:ListOfDataViewModel/>
     </Window.DataContext>
@@ -22,18 +26,19 @@
                 <RowDefinition/>
             </Grid.RowDefinitions>
             <StackPanel Grid.Column="1" Grid.Row="0">
-                <Button x:Name="btnUp" Content="Вверх"/>
-                <Button x:Name="btnDown" Content="Вниз" />
-                <Button x:Name="btnDelete" Content="Удалить"/>
-                <Button x:Name="btnAdd" Content="Добавить..."/>
-                <Button x:Name="btnChange" Content="Изменить..."/>                
+                <Button x:Name="btnUp" Content="Вверх" Margin="5" Command="{Binding UpCommand}"/>
+                <Button x:Name="btnDown" Content="Вниз" Margin="5" Command="{Binding DownCommand}"/>
+                <Button x:Name="btnDelete" Content="Удалить" Margin="5" Command="{Binding DeleteItem}"/>
+                <Button x:Name="btnAdd" Content="Добавить..." Margin="5" Command="{Binding AddItem}"/>
+                <Button x:Name="btnChange" Content="Изменить..." Margin="5" Command="{Binding ChangeItem}"/>                
             </StackPanel>
             <StackPanel Grid.Column="1" Grid.Row="1" VerticalAlignment="Bottom">
-                <Button x:Name="btnOK" Content="OK" />
-                <Button x:Name="btnCancel" Content="Отмена"/>
+                <Button x:Name="btnOK" Content="OK" Margin="5" Command="{Binding CloseCommand}"/>
+                <Button x:Name="btnCancel" Content="Отмена" Margin="5" Command="{Binding CancelCommand}"/>
             </StackPanel>
             <ListBox Grid.Column="0" Grid.RowSpan="2" Margin="5" 
-                     ItemsSource="{Binding Types}">
+                     ItemsSource="{Binding Values}"
+                     SelectedItem="{Binding CurrentItem, Mode=TwoWay}">
             </ListBox>
         </Grid>
     </DockPanel>

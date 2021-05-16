@@ -128,20 +128,24 @@
                         <DataGridTemplateColumn Header="Тип" Width="2*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding CurrentItem.Types, Converter={StaticResource DefaultEnumToStringConverter}}"/>
+                                    <TextBlock DataContext="{StaticResource vm}" 
+                                               Text="{Binding DefaultItem, Converter={StaticResource DefaultEnumToStringConverter}}"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                             <DataGridTemplateColumn.CellEditingTemplate>
                                 <DataTemplate>
-                                    <ComboBox ItemsSource="{Binding CurrentItem.Types}"/>
+                                    <ComboBox DataContext ="{StaticResource vm}" ItemsSource="{Binding DefaultItem}"
+                                              SelectedItem="{Binding Path=TypesDataType, UpdateSourceTrigger=PropertyChanged}"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>
                         <DataGridTemplateColumn Width="*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button Content ="{Binding ButtonValueType}" DataContext="{StaticResource vm}"
-                                            IsEnabled="{Binding IsEnabled}"/>
+                                    <Button DataContext="{StaticResource vm}"
+                                        Content ="{Binding ButtonValueType}"
+                                            IsEnabled="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged}"
+                                            Command ="{Binding WindowOfParameters}"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
