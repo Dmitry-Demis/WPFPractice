@@ -11,13 +11,17 @@ namespace WPFPractice.Model
         SimpleString,
         StringWithHistory,
         ValueFromList,
-        SetOfValuesFromList
+        SetFromList
     }
     public class Parameter
     {
         public string Name { get; set; }
-        public DataType Types { get; set; }
+        public DataType Types { get; set; } = new DataType();
 
         public List<string> Strings { get; set; }
+        public DataType DefaultItem { get; set; } = DataType.SimpleString;
+        public Parameter CurrentItem { get; set; }
+
+
     }
 }

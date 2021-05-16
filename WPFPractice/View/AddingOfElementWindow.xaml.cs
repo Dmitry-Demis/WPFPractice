@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,7 +24,24 @@ namespace WPFPractice.View
         public AddingOfElementWindow()
         {
             InitializeComponent();
-          
+            Loaded += AddingOfElementWindow_Loaded;
+            
+        }
+
+        private void AddingOfElementWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            if (DataContext is ICloseWindows vm)
+            {
+                vm.Close += () =>
+                {
+                    this.Close();
+                };
+                Closing += (s, ex) =>
+                  {
+                      ex.Cancel = !vm.CanClose();
+                  };
+            }
+
         }
     }
 }

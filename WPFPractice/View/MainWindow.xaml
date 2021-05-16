@@ -8,11 +8,15 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"        
         mc:Ignorable="d"        
       
-        Title="Дополнительные параметры" MinHeight="450" MinWidth="450"
+        Title="Дополнительные параметры" MinHeight="300" MinWidth="300"
         >
-    <!--<Window.DataContext>
+    <Window.Resources>
+        <local:ConvertEnumToString x:Key="DefaultEnumToStringConverter"></local:ConvertEnumToString>
+        <local:MainWindowViewModel x:Key="vm"></local:MainWindowViewModel>
+    </Window.Resources>
+    <Window.DataContext>
         <local:MainWindowViewModel/>
-    </Window.DataContext>-->
+    </Window.DataContext>
    
     <DockPanel >
         <Menu DockPanel.Dock="Top">
@@ -43,7 +47,7 @@
                     </Path.Fill>
                 </Path>
             </Button>
-            <Button RenderTransformOrigin="0.5, 0.5" Height="27" ToolTip="Подняться"                    Command="{Binding SaveCommand}">
+            <Button RenderTransformOrigin="0.5, 0.5" Height="27" ToolTip="Подняться"  Command="{Binding UpCommand}">
                 <Path Data="F1 M 0,0 C 0,0 -0.16,-0.16 -0.16,-0.16 L -0.32,-0.32 -0.32,-7.52 C -0.32,-11.36 -0.32,-14.56 -0.32,-14.56
 		 -0.32,-14.56 -2.08,-14.56 -4,-14.56 -7.52,-14.72 -7.68,-14.72 -7.84,-14.72 -8,-14.88 -8.16,-15.2 -8,-15.36
 		 -8,-15.36 -7.52,-15.84 -6.88,-16.48 -5.12,-17.92 3.36,-25.44 4.32,-26.24 5.28,-27.04 5.28,-27.04 5.6,-26.88
@@ -66,7 +70,7 @@
                     </Path.Fill>
                 </Path>
             </Button>
-            <Button RenderTransformOrigin="0.5, 0.5" Height="27" ToolTip="Спуститься">
+            <Button RenderTransformOrigin="0.5, 0.5" Height="27" ToolTip="Спуститься" Command="{Binding DownCommand}">
                 <Path Data="F1 M 0,0 C 0,0 -0.16,-0.16 -0.16,-0.16 L -0.32,-0.32 -0.32,-7.52 C -0.32,-11.36 -0.32,-14.56 -0.32,-14.56
 		 -0.32,-14.56 -2.08,-14.56 -4,-14.56 -7.52,-14.72 -7.68,-14.72 -7.84,-14.72 -8,-14.88 -8.16,-15.2 -8,-15.36
 		 -8,-15.36 -7.52,-15.84 -6.88,-16.48 -5.12,-17.92 3.36,-25.44 4.32,-26.24 5.28,-27.04 5.28,-27.04 5.6,-26.88
@@ -94,7 +98,7 @@
             </Button>
             <Separator />
             <Button x:Name="btnDeleteARowToATable" ToolTip="Удалить элемент из таблицы"
-                    >
+                    Command="{Binding DeleteItem}">
                 <Path Data="M 0,0 L 0,27 27,27 27,0 z" Clip="M 9,0 L 9,9 0,9 0,18 9,18 9,27 18,27 18,18 27,18 27,9 18,9 18,0 z" RenderTransformOrigin="0.5,0.5">
                     <Path.RenderTransform>
                         <TransformGroup>
@@ -114,32 +118,36 @@
         </ToolBar>
         <Grid Margin="5">
             <ScrollViewer>
-                <DataGrid x:Name="dataBase" AutoGenerateColumns="False" Margin="5">
+                <DataGrid x:Name="dataBase" AutoGenerateColumns="False" Margin="5" CanUserAddRows="False"
+                          
+                          ItemsSource="{Binding Parameters}"
+                          SelectedItem="{Binding CurrentItem, Mode=TwoWay}"
+                          AlternatingRowBackground="Gray">
                     <DataGrid.Columns>
-                        <DataGridTextColumn Header="Название" Width="3*" />
+                        <DataGridTextColumn Header="Название" Width="3*" Binding="{Binding Path=Name}" />
                         <DataGridTemplateColumn Header="Тип" Width="2*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding Path=CurrentElement}"/>
+                                    <TextBlock Text="{Binding CurrentItem.Types, Converter={StaticResource DefaultEnumToStringConverter}}"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                             <DataGridTemplateColumn.CellEditingTemplate>
                                 <DataTemplate>
-                                    <ComboBox ItemsSource="{Binding Path=DefaultElement}"
-                                              SelectedItem="{Binding Path=CurrentElement, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <ComboBox ItemsSource="{Binding CurrentItem.Types}"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>
                         <DataGridTemplateColumn Width="*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button/>
+                                    <Button Content ="{Binding ButtonValueType}" DataContext="{StaticResource vm}"
+                                            IsEnabled="{Binding IsEnabled}"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </ScrollViewer>            
-        </Grid>
+        </Grid>       
     </DockPanel>
 </Window>

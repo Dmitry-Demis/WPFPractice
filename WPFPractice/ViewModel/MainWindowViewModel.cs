@@ -8,34 +8,51 @@ using WPFPractice.Cmds;
 using System.Windows.Controls.Primitives;
 using WPFPractice.View;
 using System.Collections.Generic;
+using System.Windows;
+using System.Windows.Data;
+using System.Globalization;
 
 namespace WPFPractice.ViewModel
 {
     public class MainWindowViewModel : ViewModelBase
     {
-        List<Parameter> Parameters { get; set; } = new List<Parameter>();
-        private DataType _currentElement;
-        public DataType CurrentElement
+        public MainWindowViewModel()
+        {          
+            
+        }
+        public ObservableCollection<Parameter> Parameters { get; set; } = new ObservableCollection<Parameter>();       
+        private string _name;
+        public string Name
         {
-            get => _currentElement;
+            get => _name;
             set
             {
-                if (_currentElement!=value)
-                {
-                    _currentElement = value;
-                    OnPropertyChanged(nameof(CurrentElement));
-                }
+                _name = value;
+                OnPropertyChanged(nameof(Name));
             }
         }
-        private DataType _defaultElement;
+        private Parameter _currentItem; 
 
-        public DataType DefaultElement
+        public Parameter CurrentItem
         {
-            get { return _defaultElement; }
-            set { _defaultElement = value; }
+            get => _currentItem;
+            set
+            {
+               /* if (_currentItem == value)
+                {
+                    return;
+                }*/
+                _currentItem = value;
+                OnPropertyChanged(nameof(CurrentItem));
+            }
         }
-        private RelayCommand _addItem;
 
+        public DataType DefaultItem { get; set; } = DataType.SimpleString;
+        public DataType TypesDataType { get; set; }
+
+        private RelayCommand _addItem;
+        public string ButtonValueType { get; set; } = "Список...";
+        public bool IsEnabled { get; set; } = false;
         public RelayCommand AddItem
         {
             get
@@ -43,13 +60,142 @@ namespace WPFPractice.ViewModel
                 return _addItem ??
                   (_addItem = new RelayCommand( ()=>
                   {
-                      Parameter parameter = new Parameter();
-                      AddingOfElementWindow addingOfElementWindow = new AddingOfElementWindow();
-                      addingOfElementWindow.Show();
+                      AddingOfElementWindowViewModel viewModel = new AddingOfElementWindowViewModel();
+                      AddingOfElementWindow window = new AddingOfElementWindow { DataContext = viewModel };
+                      window.ShowDialog();
+                      if (!string.IsNullOrEmpty(viewModel.Name))
+                      {
+                         Parameter parameter = new Parameter();
+                          //parameter.Name = viewModel.Name;
+                          //Parameters.Add(parameter);
+                          parameter.Name = viewModel.Name;
+                          parameter.Types = new DataType();
+                          parameter.Strings = new List<string>();
+                          parameter.DefaultItem = DefaultItem;
+                          parameter.CurrentItem = parameter;
+                          Parameters.Add(parameter);
+                         
+                      }                      
                   }));
-            }
-           
+            } 
         }
 
+        public RelayCommand _deleteItem;
+        public RelayCommand DeleteItem
+        {
+            get
+            {
+                return _deleteItem ??
+                       (_deleteItem = new RelayCommand(() =>
+                           {
+                               if (CurrentItem==null)
+                               {
+                                   return;
+                               }
+                               string msg = $"Вы правда хотите удалить элемент {CurrentItem.Name}?";
+                               MessageBoxResult messageBoxResult = MessageBox.Show(msg, "Удаление элемента из таблицы",
+                                   MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                               if (messageBoxResult == MessageBoxResult.Yes)
+                               {
+                                   Parameters.Remove(CurrentItem);
+                               }
+                               else
+                               {
+                                   return;
+                               }
+                           },
+                           () =>
+                           {
+                               return Parameters.Count > 0;
+                           }));
+            }
+        }
+
+        public RelayCommand _upCommand;
+
+        public RelayCommand UpCommand
+        {
+            get
+            {
+                return _upCommand ??
+                       (_upCommand = new RelayCommand(() =>
+                           {
+                               var curr = CurrentItem;
+                               var index1 = Parameters.IndexOf(curr);
+                               var secondElement = Parameters.ElementAt(index1 - 1);
+                               Parameters[index1] = secondElement;
+                               Parameters[index1 - 1] = curr;
+                               CurrentItem = curr;
+                           },
+                           () =>
+                           {
+                               return CurrentItem!=null && CurrentItem != Parameters[0];
+                           }));
+            }
+        }
+        public RelayCommand _downCommand;
+
+        public RelayCommand DownCommand
+        {
+            get
+            {
+                return _downCommand ??
+                       (_downCommand = new RelayCommand(() =>
+                           {
+                               var curr = CurrentItem;
+                               var index1 = Parameters.IndexOf(curr);
+                               var secondElement = Parameters.ElementAt(index1 + 1);
+                               Parameters[index1] = secondElement;
+                               Parameters[index1 + 1] = curr;
+                               CurrentItem = curr;
+                           },
+                           () =>
+                           {
+                               return CurrentItem != null && CurrentItem != Parameters[Parameters.Count-1];
+                           }));
+            }
+        }
+
+    }
+
+    public class ConvertEnumToString : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            if (value != null)
+            {
+                var dataType = (DataType)value;
+                string s;
+                switch (dataType)
+                {
+                    case DataType.SimpleString:
+                        s =  "Простая строка";
+                        break;
+                    case DataType.StringWithHistory:
+                        s = "Строка с историей";
+                        break;
+                    case DataType.ValueFromList:
+                        s = "Значение из списка";
+                        break;
+                    case DataType.SetFromList:
+                        s = "Набор значений из списка";
+                        break;
+                    default:
+                        s = null;
+                        break;
+                }
+
+                return s;
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value;
+        }
     }
 }

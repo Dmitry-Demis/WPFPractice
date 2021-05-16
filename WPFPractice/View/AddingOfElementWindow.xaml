@@ -6,17 +6,20 @@
         xmlns:local="clr-namespace:WPFPractice.ViewModel"
         mc:Ignorable="d"
         Title="Добавление элемента" Height="150" Width="300"
-        WindowStartupLocation="CenterScreen">
+        WindowStartupLocation="CenterScreen"
+        x:Name="TestWindow">
     <Window.DataContext>
         <local:AddingOfElementWindowViewModel/>
     </Window.DataContext>
+    
     <StackPanel Margin="5">
         <TextBlock Text="Введите строку:" Margin="5"/>
-        <TextBox Text="{Binding Name}"/>
+        <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
         <TextBlock Text="Поле должно быть не пустым" Foreground="Red"/>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">
-            <Button Content="Ok" Margin="5" Padding="5" Width="70" Command="{Binding AddString}"/>
-            <Button Content="Отмена" Margin="5" Padding="5" Width="70"/>
+            <Button Content="OК" Margin="5" Padding="5" Width="70" Command="{Binding CloseCommand}"
+                   />
+            <Button Content="Отмена" Margin="5" Padding="5" Width="70" Command="{Binding CancelCommand}"/>
         </StackPanel>
     </StackPanel>
 </Window>

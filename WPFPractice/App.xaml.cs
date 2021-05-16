@@ -17,10 +17,8 @@ namespace WPFPractice
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            var viewModel = new MainWindowViewModel();
-            var view = new MainWindow { DataContext = viewModel };
-            var viewModelAddingElement = new AddingOfElementWindowViewModel();
-            var viewAdding = new AddingOfElementWindow { DataContext = viewModelAddingElement };
+            //var viewModel = new MainWindowViewModel();
+            var view = new MainWindow ();
             view.Show();
             //viewAdding.Show();
         }
