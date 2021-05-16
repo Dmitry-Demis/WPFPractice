@@ -71,7 +71,9 @@ namespace WPFPractice.ViewModel
                           parameter.Strings = new List<string>();
                           CurrentItem = parameter;
                           Parameters.Add(CurrentItem);
-                         
+                          IsTableEmpty = Visibility.Hidden;
+
+
                       }
                   }));
             } 
@@ -99,6 +101,11 @@ namespace WPFPractice.ViewModel
                                else
                                {
                                    return;
+                               }
+
+                               if (Parameters.Count==0)
+                               {
+                                   IsTableEmpty = Visibility.Visible;
                                }
                            },
                            () =>
@@ -183,6 +190,16 @@ namespace WPFPractice.ViewModel
            
         }
 
+        private Visibility _isTableEmpty;
+        public Visibility IsTableEmpty
+        {
+            get => _isTableEmpty;
+            set
+            {
+                _isTableEmpty = value;
+                OnPropertyChanged(nameof(IsTableEmpty));
+            }
+        }
     }
 
     /// <summary>

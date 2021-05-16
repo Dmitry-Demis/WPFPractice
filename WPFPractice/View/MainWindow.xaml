@@ -18,7 +18,7 @@
         <local:MainWindowViewModel/>
     </Window.DataContext>
    
-    <DockPanel >
+    <DockPanel LastChildFill="True" >
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_Файл">
                 <MenuItem Header="Открыть" InputGestureText="Ctrl+O"/>
@@ -116,6 +116,7 @@
                 </Path>
             </Button>
         </ToolBar>
+       
         <Grid Margin="5">
             <ScrollViewer>
                 <DataGrid x:Name="dataBase" AutoGenerateColumns="False" Margin="5" CanUserAddRows="False"
@@ -151,7 +152,12 @@
                         </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
-            </ScrollViewer>            
-        </Grid>       
+            </ScrollViewer>
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsTableEmpty, UpdateSourceTrigger=PropertyChanged}">
+                <Image Source="D:\Csharp\WPFPractice\WPFPractice\Icons\_2.png" Height="100" Width="100"/>
+                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"> В таблице пусто</TextBlock>
+            </StackPanel>
+        </Grid>
+        
     </DockPanel>
 </Window>
