@@ -31,7 +31,7 @@ namespace WPFPractice.View
 
         private void AddingOfElementWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            if (DataContext is ICloseWindows vm)
+            if (DataContext is ICloseWindows vm) //Rem: дублирование. Можно сделать прикрепляемым св-вом https://www.youtube.com/watch?v=U7Qclpe2joo
             {
                 vm.Close += () =>
                 {

@@ -11,7 +11,7 @@ using WPFPractice.View;
 
 namespace WPFPractice.ViewModel
 {
-    class ListOfDataViewModel : ViewModelBase, ICloseWindows
+    class ChangeParameterViewModel : BaseViewModel, ICloseWindows
     {
         /// <summary>
         /// Values - наблюдаемая коллекция значений элементов

@@ -4,20 +4,17 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFPractice.ViewModel"
+        xmlns:enumcmb="clr-namespace:WPFPractice.BindingEnums"
         xmlns:col="clr-namespace:System.Collections;assembly=mscorlib"
-        xmlns:sys="clr-namespace:System;assembly=mscorlib"        
-        mc:Ignorable="d"        
-      
-        Title="Дополнительные параметры" MinHeight="300" MinWidth="300"
-        >
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        mc:Ignorable="d"      
+        Title="Дополнительные параметры" MinHeight="300" MinWidth="300">
     <Window.Resources>
-        <local:ConvertEnumToString x:Key="DefaultEnumToStringConverter"></local:ConvertEnumToString>
-        <local:MainWindowViewModel x:Key="vm"></local:MainWindowViewModel>
+        <local:BoolToVisibilityConverter x:Key="VisibilityConverter"/>
     </Window.Resources>
     <Window.DataContext>
         <local:MainWindowViewModel/>
     </Window.DataContext>
-   
     <DockPanel LastChildFill="True" >
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_Файл">
@@ -48,6 +45,7 @@
                 </Path>
             </Button>
             <Button RenderTransformOrigin="0.5, 0.5" Height="27" ToolTip="Подняться"  Command="{Binding UpCommand}">
+                
                 <Path Data="F1 M 0,0 C 0,0 -0.16,-0.16 -0.16,-0.16 L -0.32,-0.32 -0.32,-7.52 C -0.32,-11.36 -0.32,-14.56 -0.32,-14.56
 		 -0.32,-14.56 -2.08,-14.56 -4,-14.56 -7.52,-14.72 -7.68,-14.72 -7.84,-14.72 -8,-14.88 -8.16,-15.2 -8,-15.36
 		 -8,-15.36 -7.52,-15.84 -6.88,-16.48 -5.12,-17.92 3.36,-25.44 4.32,-26.24 5.28,-27.04 5.28,-27.04 5.6,-26.88
@@ -59,7 +57,7 @@
                             <TranslateTransform X="5" Y="13"/>
                             <ScaleTransform ScaleX="0.75"/>                           
                         </TransformGroup>                        
-                    </Path.RenderTransform>
+                    </Path.RenderTransform>                   
                     <Path.Fill>
                         <LinearGradientBrush>
                             <GradientStop Color="DarkBlue" Offset="0.0"/>
@@ -122,40 +120,42 @@
                 <DataGrid x:Name="dataBase" AutoGenerateColumns="False" Margin="5" CanUserAddRows="False"
                           
                           ItemsSource="{Binding Parameters}"
-                          SelectedItem="{Binding CurrentItem, Mode=TwoWay}"
+                          SelectedItem="{Binding CurrentParameter, Mode=TwoWay}"
                           AlternatingRowBackground="Gray">
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="Название" Width="3*" Binding="{Binding Path=Name}" />
                         <DataGridTemplateColumn Header="Тип" Width="2*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock DataContext="{StaticResource vm}" 
-                                               Text="{Binding DefaultItem, Converter={StaticResource DefaultEnumToStringConverter}}"/>
+                                    <TextBlock Text="{Binding SelectedParameterType}"/>
+                                    <!--Rem:[solved] -->
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                             <DataGridTemplateColumn.CellEditingTemplate>
                                 <DataTemplate>
-                                    <ComboBox DataContext ="{StaticResource vm}" ItemsSource="{Binding DefaultItem}"
-                                              SelectedItem="{Binding Path=TypesDataType, UpdateSourceTrigger=PropertyChanged}"/>
+                                    <ComboBox ItemsSource="{Binding Source={enumcmb:EnumBindingSource {x:Type enumcmb:ParameterType}}, UpdateSourceTrigger=PropertyChanged}"
+                                              SelectedItem="{Binding SelectedParameterType, Mode=TwoWay}"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>
                         <DataGridTemplateColumn Width="*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <Button DataContext="{StaticResource vm}"
-                                        Content ="{Binding ButtonValueType}"
-                                            IsEnabled="{Binding IsEnabled, UpdateSourceTrigger=PropertyChanged}"
-                                            Command ="{Binding WindowOfParameters}"/>
+                                    <Button
+                                        Content ="Список..."
+                                        Command ="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext.ChangeParameterCommand}"
+                                        CommandParameter="{Binding}"/>
+                                    <!--Rem: [solved] зачем привязывать IsEnabled?-->
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
                     </DataGrid.Columns>
                 </DataGrid>
             </ScrollViewer>
-            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsTableEmpty, UpdateSourceTrigger=PropertyChanged}">
-                <Image Source="D:\Csharp\WPFPractice\WPFPractice\Icons\_2.png" Height="100" Width="100"/>
-                <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"> В таблице пусто</TextBlock>
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsTableEmpty, Converter = {StaticResource VisibilityConverter}}">
+                <Image Source="/Images/emptyTable.png" Height="100" Width="100"/>
+                <!--Rem: [solved] относительная ссылка -->
+                 <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"> В таблице пусто</TextBlock>
             </StackPanel>
         </Grid>
         

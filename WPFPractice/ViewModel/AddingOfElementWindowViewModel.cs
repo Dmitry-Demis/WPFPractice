@@ -11,7 +11,7 @@ using WPFPractice.View;
 namespace WPFPractice.ViewModel
 {
 
-    public class AddingOfElementWindowViewModel : ViewModelBase, ICloseWindows
+    public class AddingOfElementWindowViewModel : BaseViewModel, ICloseWindows
     {
         public string _name;
         public string Name 

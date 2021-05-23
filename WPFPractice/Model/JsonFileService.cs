@@ -9,7 +9,7 @@ using System.IO;
 
 namespace WPFPractice.Model
 {
-    public class JsonFileService : IFileService
+    public class JsonFileService : IFileService //Rem: лишнее?
     {
        
     }

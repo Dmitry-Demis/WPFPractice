@@ -1,22 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using WPFPractice.BindingEnums;
 
 namespace WPFPractice.Model
 {
-    public enum DataType
-    {
-        SimpleString,
-        StringWithHistory,
-        ValueFromList,
-        SetFromList
-    }
+    
     public class Parameter
     {
         public string Name { get; set; }
-        public DataType Types { get; set; } = new DataType();
+        public ParameterType SelectedParameterType { get; set; } = ParameterType.SimpleString;
         public List<string> Strings { get; set; }
     }
+
+    //Rem:
+    //- комментарии
 }

@@ -18,9 +18,9 @@ namespace WPFPractice.View
     /// <summary>
     /// Interaction logic for ListOfData.xaml
     /// </summary>
-    public partial class ListOfData : Window
+    public partial class ChangeParameterWindow : Window //Rem: [solved] название ListOfData не сильно говорящее 
     {
-        public ListOfData()
+        public ChangeParameterWindow()
         {
             InitializeComponent();
             Loaded += ListOfData_Loaded;

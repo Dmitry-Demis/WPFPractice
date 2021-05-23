@@ -21,6 +21,14 @@ namespace WPFPractice
             var view = new MainWindow ();
             view.Show();
             //viewAdding.Show();
+
+            //Rem: что-то подобное д.получиться
+            //IDialogService dialogService = new DialogService(MainWindow);
+            //dialogService.Register<ListEditViewModel, ListEditWindow>();
+            //dialogService.Register<LineEditViewModel, LineEditWindow>();
+            //var viewModel = new MainWindowViewModel(dialogService);
+            //var view = new MainWindow { DataContext = viewModel };
+            //view.ShowDialog();
         }
     }
 }

@@ -62,7 +62,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="View\ListOfData.xaml">
+    <Page Include="View\ChangeParameterWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -77,21 +77,24 @@
     <Compile Include="Cmds\CommandBase.cs" />
     <Compile Include="Cmds\RelayCommand.cs" />
     <Compile Include="Cmds\RelayCommandT.cs" />
+    <Compile Include="BindingEnums\ParameterType.cs" />
     <Compile Include="Model\DefaultDialogService.cs" />
+    <Compile Include="BindingEnums\EnumBindingSourceExtension.cs" />
+    <Compile Include="BindingEnums\EnumDescriptionTypeConverter.cs" />
     <Compile Include="Model\ICloseWindows.cs" />
     <Compile Include="Model\IDialogService.cs" />
     <Compile Include="Model\IFileService.cs" />
     <Compile Include="Model\JsonFileService.cs" />
     <Compile Include="Model\Parameter.cs" />
     <Compile Include="ViewModel\AddingOfElementWindowViewModel.cs" />
-    <Compile Include="ViewModel\ListOfDataViewModel.cs" />
+    <Compile Include="ViewModel\ChangeParameterViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
-    <Compile Include="ViewModel\ViewModelBase.cs" />
+    <Compile Include="ViewModel\BaseViewModel.cs" />
     <Compile Include="View\AddingOfElementWindow.xaml.cs">
       <DependentUpon>AddingOfElementWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="View\ListOfData.xaml.cs">
-      <DependentUpon>ListOfData.xaml</DependentUpon>
+    <Compile Include="View\ChangeParameterWindow.xaml.cs">
+      <DependentUpon>ChangeParameterWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -124,9 +127,8 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
   <ItemGroup>
-    <Content Include="Icons\right-arrow.svg" />
+    <Resource Include="Images\emptyTable.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -11,44 +11,33 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Data;
 using System.Globalization;
+using WPFPractice.BindingEnums;
 
 namespace WPFPractice.ViewModel
 {
-    public class MainWindowViewModel : ViewModelBase
+    public class MainWindowViewModel : BaseViewModel
     {
       
-        public ObservableCollection<Parameter> Parameters { get; set; } = new ObservableCollection<Parameter>();       
+        public ObservableCollection<Parameter> Parameters { get; set; } = new ObservableCollection<Parameter>();
+        
         private string _name;
         public string Name
         {
             get => _name;
             set
             {
-                _name = value;
-                OnPropertyChanged(nameof(Name));
+                SetProperty(ref _name, value);
             }
         }
-        private Parameter _currentItem; 
-
-        public Parameter CurrentItem
+        private Parameter _currentParameter; 
+        public Parameter CurrentParameter
         {
-            get => _currentItem;
+            get => _currentParameter;
             set
             {
-               /* if (_currentItem == value)
-                {
-                    return;
-                }*/
-                _currentItem = value;
-                OnPropertyChanged(nameof(CurrentItem));
+                SetProperty(ref _currentParameter, value);
             }
-        }
-
-        public DataType DefaultItem { get; set; } = DataType.SetFromList;
-        public DataType TypesDataType { get; set; }
-
-        
-        public string ButtonValueType { get; set; } = "Список...";
+        }        
         public bool IsEnabled { get; set; } = true;
         private RelayCommand _addItem;
         public RelayCommand AddItem
@@ -60,20 +49,17 @@ namespace WPFPractice.ViewModel
                   {
                       AddingOfElementWindowViewModel viewModel = new AddingOfElementWindowViewModel();
                       AddingOfElementWindow window = new AddingOfElementWindow { DataContext = viewModel };
-                      window.ShowDialog();
+                      window.ShowDialog();              //Rem: где использование DialogService'а и проверка результата bool?
                       if (!string.IsNullOrEmpty(viewModel.Name))
                       {
                          Parameter parameter = new Parameter();
-                          //parameter.Name = viewModel.Name;
-                          //Parameters.Add(parameter);
                           parameter.Name = viewModel.Name;
-                          parameter.Types = new DataType();
+                          parameter.SelectedParameterType = ParameterType.SimpleString;
                           parameter.Strings = new List<string>();
-                          CurrentItem = parameter;
-                          Parameters.Add(CurrentItem);
-                          IsTableEmpty = Visibility.Hidden;
-
-
+                          CurrentParameter = parameter;
+                          Parameters.Add(CurrentParameter);
+                          IsTableEmpty = false;
+                        
                       }
                   }));
             } 
@@ -87,26 +73,24 @@ namespace WPFPractice.ViewModel
                 return _deleteItem ??
                        (_deleteItem = new RelayCommand(() =>
                            {
-                               if (CurrentItem==null)
+                               if (CurrentParameter==null)
                                {
                                    return;
                                }
-                               string msg = $"Вы правда хотите удалить элемент {CurrentItem.Name}?";
-                               MessageBoxResult messageBoxResult = MessageBox.Show(msg, "Удаление элемента из таблицы",
+                               string msg = $"Вы правда хотите удалить элемент {CurrentParameter.Name}?";
+                               MessageBoxResult messageBoxResult = MessageBox.Show(msg, "Удаление элемента из таблицы", //Rem: а где использование DialogService'а
                                    MessageBoxButton.YesNo, MessageBoxImage.Warning);
                                if (messageBoxResult == MessageBoxResult.Yes)
                                {
-                                   Parameters.Remove(CurrentItem);
+                                   Parameters.Remove(CurrentParameter);
                                }
                                else
                                {
                                    return;
                                }
+                               IsTableEmpty = (Parameters.Count == 0) ? true : false;
 
-                               if (Parameters.Count==0)
-                               {
-                                   IsTableEmpty = Visibility.Visible;
-                               }
+
                            },
                            () =>
                            {
@@ -124,21 +108,21 @@ namespace WPFPractice.ViewModel
                 return _upCommand ??
                        (_upCommand = new RelayCommand(() =>
                            {
-                               var curr = CurrentItem;
+                               var curr = CurrentParameter;
                                var index1 = Parameters.IndexOf(curr);
                                var secondElement = Parameters.ElementAt(index1 - 1);
                                Parameters[index1] = secondElement;
                                Parameters[index1 - 1] = curr;
-                               CurrentItem = curr;
+                               CurrentParameter = curr;
                            },
                            () =>
                            {
-                               return CurrentItem!=null && CurrentItem != Parameters[0];
-                           }));
+                               return CurrentParameter!=null && CurrentParameter != Parameters?[0]; //Rem: Parameters[0]? а если Count == 0
+                           })); 
             }
         }
-        private RelayCommand _downCommand;
 
+        private RelayCommand _downCommand;
         public RelayCommand DownCommand
         {
             get
@@ -146,103 +130,79 @@ namespace WPFPractice.ViewModel
                 return _downCommand ??
                        (_downCommand = new RelayCommand(() =>
                            {
-                               var curr = CurrentItem;
+                               var curr = CurrentParameter;
                                var index1 = Parameters.IndexOf(curr);
                                var secondElement = Parameters.ElementAt(index1 + 1);
                                Parameters[index1] = secondElement;
                                Parameters[index1 + 1] = curr;
-                               CurrentItem = curr;
+                               CurrentParameter = curr;
                            },
                            () =>
                            {
-                               return CurrentItem != null && CurrentItem != Parameters[Parameters.Count-1];
+                               return CurrentParameter != null && CurrentParameter != Parameters[Parameters.Count-1];
                            }));
             }
         }
 
         //TODO: Реализовать команду открытия нового окна на основе значений DataGrid [Сложности с привязкой к различным данным]
 
-        private RelayCommand _windowOfParameters;
-        public RelayCommand WindowOfParameters
+        private RelayCommand<Parameter> _changeParameterCommand;
+        public RelayCommand<Parameter> ChangeParameterCommand //Rem: [solved] именование д.обозначать действие, а так не оч.понятно - нужно обращать внимание на то, что возвращает св-во
         {
             get
             {
-                return _windowOfParameters ??
-                       (_windowOfParameters = new RelayCommand(() =>
+                return _changeParameterCommand ??
+                       (_changeParameterCommand = new RelayCommand<Parameter>((param) =>
                            {
+                               //Rem: И здесь редактируем конкретный параметр
 
-                               ListOfDataViewModel viewModel = new ListOfDataViewModel();
-                               ListOfData window = new ListOfData { DataContext = viewModel };
+                               ChangeParameterViewModel viewModel = new ChangeParameterViewModel();
+                               ChangeParameterWindow window = new ChangeParameterWindow { DataContext = viewModel };
                                window.ShowDialog();
 
                            },
-                           () =>
+                           (param) =>
                            {
-                               //var curr = CurrentItem;
-                               //if (curr == null) return false;
-                               //if (curr.Types==DataType.SetFromList || curr.Types == DataType.ValueFromList)
-                               //{
-                               //    IsEnabled = true;
-                               //}
-                               return IsEnabled;
+                                if (param == null)
+                               {
+                                   return false;
+                               }
+                               return param.SelectedParameterType == ParameterType.SetFromList || param.SelectedParameterType == ParameterType.ValueFromList;
+                              
                            }));
             }
            
         }
 
-        private Visibility _isTableEmpty;
-        public Visibility IsTableEmpty
+        private bool _isTableEmpty = true;
+        public bool IsTableEmpty //Rem: [solved] Visibility это плохо для MVVM паттерна -> bool + конвертор в XAML
+                                        //Rem: это вычисляемое св-во
         {
-            get => _isTableEmpty;
-            set
+            get
             {
-                _isTableEmpty = value;
-                OnPropertyChanged(nameof(IsTableEmpty));
+                return (Parameters.Count == 0);
             }
+            private set
+            {
+                SetProperty(ref _isTableEmpty, value);
+            }
+           
         }
+
     }
-
     /// <summary>
-    /// Конвертер, который преобразует enum в строки для отображения
+    ///  There's a converter which a bool value replaces by Visibility 
     /// </summary>
-    public class ConvertEnumToString : IValueConverter
+    public class BoolToVisibilityConverter : IValueConverter
     {
-        public object Convert(object value, Type targetType = null, object parameter = null, CultureInfo culture = null)
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (value != null)
-            {
-                var dataType = (DataType)value;
-                string s;
-                switch (dataType)
-                {
-                    case DataType.SimpleString:
-                        s =  "Простая строка";
-                        break;
-                    case DataType.StringWithHistory:
-                        s = "Строка с историей";
-                        break;
-                    case DataType.ValueFromList:
-                        s = "Значение из списка";
-                        break;
-                    case DataType.SetFromList:
-                        s = "Набор значений из списка";
-                        break;
-                    default:
-                        s = null;
-                        break;
-                }
-
-                return s;
-            }
-            else
-            {
-                return null;
-            }
+            return (bool)value ? Visibility.Visible : Visibility.Hidden;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            return value;
+            throw new NotImplementedException();
         }
     }
 }

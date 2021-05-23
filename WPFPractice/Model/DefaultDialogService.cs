@@ -1,5 +1,6 @@
 ﻿using Microsoft.Win32;
 using System;
+using System.ComponentModel;
 using System.Windows;
 
 namespace WPFPractice.Model
@@ -28,6 +29,11 @@ namespace WPFPractice.Model
                 return true;
             }
             return false;
+        }
+
+        public bool? ShowDialog(INotifyPropertyChanged viewmodel)
+        {
+            throw new NotImplementedException();
         }
 
         public void ShowMessage(string message)

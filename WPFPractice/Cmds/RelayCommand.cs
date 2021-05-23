@@ -7,7 +7,7 @@ namespace WPFPractice.Cmds
         private readonly Action _execute;
         private readonly Func<bool> _canExecute;
 
-        public RelayCommand()
+        public RelayCommand() //Rem: public -> protected, 
         {
         }
 
