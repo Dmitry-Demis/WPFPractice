@@ -53,8 +53,6 @@ namespace WPFPractice.ViewModel
                       if (!string.IsNullOrEmpty(viewModel.Name))
                       {
                          Parameter parameter = new Parameter();
-                          //parameter.Name = viewModel.Name;
-                          //Parameters.Add(parameter);
                           parameter.Name = viewModel.Name;
                           parameter.SelectedParameterType = ParameterType.SimpleString;
                           parameter.Strings = new List<string>();
