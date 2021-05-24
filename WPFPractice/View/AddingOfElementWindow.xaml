@@ -7,7 +7,9 @@
         mc:Ignorable="d"
         Title="Добавление элемента" Height="150" Width="300"
         WindowStartupLocation="CenterScreen"
-        x:Name="TestWindow">
+        x:Name="TestWindow"
+        xmlns:model ="clr-namespace:WPFPractice.Model"
+        model:WindowCloser.EnableWindowClosing="True">
     <Window.DataContext>
         <local:AddingOfElementWindowViewModel/>
     </Window.DataContext>

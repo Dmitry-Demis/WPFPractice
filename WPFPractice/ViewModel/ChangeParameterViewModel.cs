@@ -11,7 +11,7 @@ using WPFPractice.View;
 
 namespace WPFPractice.ViewModel
 {
-    class ChangeParameterViewModel : BaseViewModel, ICloseWindows
+    class ChangeParameterViewModel : BaseViewModel, ICloseWindows, IDialogRequestClose
     {
         /// <summary>
         /// Values - наблюдаемая коллекция значений элементов
@@ -175,6 +175,9 @@ namespace WPFPractice.ViewModel
         /// Команда отмены
         /// </summary>
         private RelayCommand _cancelCommand;
+
+        public event EventHandler<DialogCloseRequestedEventArgs> CloseRequested;
+
         public RelayCommand CancelCommand
             => _cancelCommand ?? (_cancelCommand = new RelayCommand(CloseWindow));
         public bool CanClose() => true;

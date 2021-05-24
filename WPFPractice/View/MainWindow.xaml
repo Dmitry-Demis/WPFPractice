@@ -5,16 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFPractice.ViewModel"
         xmlns:enumcmb="clr-namespace:WPFPractice.BindingEnums"
+        xmlns:model ="clr-namespace:WPFPractice.Model"
         xmlns:col="clr-namespace:System.Collections;assembly=mscorlib"
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"      
-        Title="Дополнительные параметры" MinHeight="300" MinWidth="300">
+        Title="Дополнительные параметры" MinHeight="300" MinWidth="150"
+        model:WindowCloser.EnableWindowClosing="True">
+
     <Window.Resources>
         <local:BoolToVisibilityConverter x:Key="VisibilityConverter"/>
     </Window.Resources>
-    <Window.DataContext>
-        <local:MainWindowViewModel/>
-    </Window.DataContext>
     <DockPanel LastChildFill="True" >
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_Файл">
@@ -22,7 +22,8 @@
                 <MenuItem  Header="Сохранить" InputGestureText="Ctrl+S"/>
                 <Separator/>
                 <MenuItem  Header="Закрыть"
-                          InputGestureText="Alt+F4"/>
+                          InputGestureText="Alt+F4"
+                          />
             </MenuItem>
             <MenuItem Header="_Изменить">
                 <MenuItem Command="ApplicationCommands.Copy" Header="Копировать"/>

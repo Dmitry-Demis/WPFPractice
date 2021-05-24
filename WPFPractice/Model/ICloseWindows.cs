@@ -8,8 +8,7 @@ namespace WPFPractice.Model
 {
     public interface ICloseWindows
     {
-
-            Action Close { get; set; }
-            bool CanClose();
+        Action Close { get; set; }
+        bool CanClose();
     }
 }

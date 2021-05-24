@@ -36,6 +36,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="MvvmDialogs, Version=8.0.0.0, Culture=neutral, PublicKeyToken=3d3b9708589bc73e, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmDialogs.8.0.0\lib\net452\MvvmDialogs.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Data" />
@@ -78,14 +81,16 @@
     <Compile Include="Cmds\RelayCommand.cs" />
     <Compile Include="Cmds\RelayCommandT.cs" />
     <Compile Include="BindingEnums\ParameterType.cs" />
-    <Compile Include="Model\DefaultDialogService.cs" />
     <Compile Include="BindingEnums\EnumBindingSourceExtension.cs" />
     <Compile Include="BindingEnums\EnumDescriptionTypeConverter.cs" />
+    <Compile Include="Model\DialogCloseRequestedEventArgs.cs" />
+    <Compile Include="Model\DialogService.cs" />
     <Compile Include="Model\ICloseWindows.cs" />
+    <Compile Include="Model\IDialog.cs" />
+    <Compile Include="Model\IDialogRequestClose.cs" />
     <Compile Include="Model\IDialogService.cs" />
-    <Compile Include="Model\IFileService.cs" />
-    <Compile Include="Model\JsonFileService.cs" />
     <Compile Include="Model\Parameter.cs" />
+    <Compile Include="Model\WindowCloser.cs" />
     <Compile Include="ViewModel\AddingOfElementWindowViewModel.cs" />
     <Compile Include="ViewModel\ChangeParameterViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />

@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:WPFPractice.ViewModel"
         mc:Ignorable="d"
         Title="Список" Height="450" Width="450"
-       >
+       xmlns:model ="clr-namespace:WPFPractice.Model"
+        model:WindowCloser.EnableWindowClosing="True">
     <Window.InputBindings>
         <KeyBinding Key="Enter"  Command="{Binding CloseCommand}"/>
         <KeyBinding Key="Escape"  Command="{Binding CancelCommand}"/>

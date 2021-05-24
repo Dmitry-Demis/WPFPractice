@@ -11,7 +11,7 @@ using WPFPractice.View;
 namespace WPFPractice.ViewModel
 {
 
-    public class AddingOfElementWindowViewModel : BaseViewModel, ICloseWindows
+    public class AddingOfElementWindowViewModel : BaseViewModel, ICloseWindows, IDialogRequestClose
     {
         public string _name;
         public string Name 
@@ -34,6 +34,9 @@ namespace WPFPractice.ViewModel
             Close?.Invoke();
         }
         private RelayCommand _cancelCommand;
+
+        public event EventHandler<DialogCloseRequestedEventArgs> CloseRequested;
+
         public RelayCommand CancelCommand
             => _cancelCommand ?? (_cancelCommand = new RelayCommand(CloseWindow));
         public bool CanClose() => true;

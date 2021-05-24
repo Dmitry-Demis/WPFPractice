@@ -20,29 +20,13 @@ namespace WPFPractice.View
     /// <summary>
     /// Interaction logic for AddingOfElementWindow.xaml
     /// </summary>
-    public partial class AddingOfElementWindow : Window
+    public partial class AddingOfElementWindow : Window, IDialog
     {
         public AddingOfElementWindow()
         {
-            InitializeComponent();
-            Loaded += AddingOfElementWindow_Loaded;
-            
+            InitializeComponent();            
         }
-
-        private void AddingOfElementWindow_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is ICloseWindows vm) //Rem: дублирование. Можно сделать прикрепляемым св-вом https://www.youtube.com/watch?v=U7Qclpe2joo
-            {
-                vm.Close += () =>
-                {
-                    this.Close();
-                };
-                Closing += (s, ex) =>
-                  {
-                      ex.Cancel = !vm.CanClose();
-                  };
-            }
-
-        }
+        //Rem: [solved] дублирование. Можно сделать прикрепляемым св-вом https://www.youtube.com/watch?v=U7Qclpe2joo
+       
     }
 }

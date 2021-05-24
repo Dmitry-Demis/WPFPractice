@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using WPFPractice.Model;
 using WPFPractice.View;
 using WPFPractice.ViewModel;
 
@@ -17,10 +18,17 @@ namespace WPFPractice
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-            //var viewModel = new MainWindowViewModel();
-            var view = new MainWindow ();
-            view.Show();
-            //viewAdding.Show();
+           
+            IDialogService dialogService = new DialogService(MainWindow);
+            dialogService.Register<AddingOfElementWindowViewModel, AddingOfElementWindow>();
+            dialogService.Register<ChangeParameterViewModel, ChangeParameterWindow>();
+            var viewModel = new MainWindowViewModel(dialogService);
+            var view = new MainWindow { DataContext = viewModel };
+
+            view.ShowDialog();
+
+
+
 
             //Rem: что-то подобное д.получиться
             //IDialogService dialogService = new DialogService(MainWindow);

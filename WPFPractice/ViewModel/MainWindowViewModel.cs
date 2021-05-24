@@ -12,14 +12,42 @@ using System.Windows;
 using System.Windows.Data;
 using System.Globalization;
 using WPFPractice.BindingEnums;
+using System.Windows.Input;
 
 namespace WPFPractice.ViewModel
 {
     public class MainWindowViewModel : BaseViewModel
     {
-      
+        private readonly IDialogService dialogService;
+
+        public MainWindowViewModel(IDialogService dialogService)
+        {
+            this.dialogService = dialogService;
+            DisplayMessageCommand = new RelayCommand(() => DisplayMessage());
+        }
+        public ICommand DisplayMessageCommand { get; }
+
+        private void DisplayMessage()
+        {
+     /*       var viewModel = new DialogViewModel("Hello!");
+
+            bool? result = dialogService.ShowDialog(viewModel);
+
+            if (result.HasValue)
+            {
+                if (result.Value)
+                {
+                    // Accepted
+                }
+                else
+                {
+                    // Cancelled
+                }
+            }*/
+        }
         public ObservableCollection<Parameter> Parameters { get; set; } = new ObservableCollection<Parameter>();
         
+
         private string _name;
         public string Name
         {
@@ -47,6 +75,7 @@ namespace WPFPractice.ViewModel
                 return _addItem ??
                   (_addItem = new RelayCommand( ()=>
                   {
+
                       AddingOfElementWindowViewModel viewModel = new AddingOfElementWindowViewModel();
                       AddingOfElementWindow window = new AddingOfElementWindow { DataContext = viewModel };
                       window.ShowDialog();              //Rem: где использование DialogService'а и проверка результата bool?

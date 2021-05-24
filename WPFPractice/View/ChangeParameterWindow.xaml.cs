@@ -18,27 +18,11 @@ namespace WPFPractice.View
     /// <summary>
     /// Interaction logic for ListOfData.xaml
     /// </summary>
-    public partial class ChangeParameterWindow : Window //Rem: [solved] название ListOfData не сильно говорящее 
+    public partial class ChangeParameterWindow : Window, IDialog //Rem: [solved] название ListOfData не сильно говорящее 
     {
         public ChangeParameterWindow()
         {
             InitializeComponent();
-            Loaded += ListOfData_Loaded;
-        }
-
-        private void ListOfData_Loaded(object sender, RoutedEventArgs e)
-        {
-            if (DataContext is ICloseWindows vm)
-            {
-                vm.Close += () =>
-                {
-                    this.Close();
-                };
-                Closing += (s, ex) =>
-                {
-                    ex.Cancel = !vm.CanClose();
-                };
-            }
         }
     }
 }
