@@ -45,9 +45,14 @@ namespace WPFPractice.ViewModel
                 }
             }*/
         }
+        /// <summary>
+        /// Parameters - a collection of parametres in a data table
+        /// </summary>
         public ObservableCollection<Parameter> Parameters { get; set; } = new ObservableCollection<Parameter>();
-        
 
+        /// <summary>
+        /// Name - a name of a parameter
+        /// </summary>
         private string _name;
         public string Name
         {
@@ -57,6 +62,10 @@ namespace WPFPractice.ViewModel
                 SetProperty(ref _name, value);
             }
         }
+
+        /// <summary>
+        /// CurrentParameter - a selected parameter in a datatable shows here
+        /// </summary>
         private Parameter _currentParameter; 
         public Parameter CurrentParameter
         {

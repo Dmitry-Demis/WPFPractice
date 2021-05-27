@@ -19,8 +19,7 @@ namespace WPFPractice.ViewModel
             get => _name; 
             set
             {
-                _name = value;
-                OnPropertyChanged(nameof(Name));
+                SetProperty(ref _name, value);
             } 
         }
         private RelayCommand _closeCommand;
