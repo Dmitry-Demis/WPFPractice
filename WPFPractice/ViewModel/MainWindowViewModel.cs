@@ -22,9 +22,56 @@ namespace WPFPractice.ViewModel
 
         public MainWindowViewModel(IDialogService dialogService)
         {
+<<<<<<< HEAD
             this.dialogService = dialogService;          
         }       
         public ObservableCollection<Parameter> Parameters { get; set; } = new ObservableCollection<Parameter>();
+=======
+            this.dialogService = dialogService;
+            DisplayMessageCommand = new RelayCommand(() => DisplayMessage());
+        }
+        public ICommand DisplayMessageCommand { get; }
+
+        private void DisplayMessage()
+        {
+     /*       var viewModel = new DialogViewModel("Hello!");
+
+            bool? result = dialogService.ShowDialog(viewModel);
+
+            if (result.HasValue)
+            {
+                if (result.Value)
+                {
+                    // Accepted
+                }
+                else
+                {
+                    // Cancelled
+                }
+            }*/
+        }
+        /// <summary>
+        /// Parameters - a collection of parametres in a data table
+        /// </summary>
+        public ObservableCollection<Parameter> Parameters { get; set; } = new ObservableCollection<Parameter>();
+
+        /// <summary>
+        /// Name - a name of a parameter
+        /// </summary>
+        private string _name;
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                SetProperty(ref _name, value);
+            }
+        }
+
+        /// <summary>
+        /// CurrentParameter - a selected parameter in a datatable shows here
+        /// </summary>
+>>>>>>> 16e7efee9eb03b43145ba9b80fda751dfbea1763
         private Parameter _currentParameter; 
         public Parameter CurrentParameter
         {
