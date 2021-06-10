@@ -45,7 +45,7 @@ namespace WPFPractice.ViewModel
                 Name = null;
             }));
         public bool CanClose() => true;
-        //TODO: не получается убрать надпись "Поле не должно быть пустым", не меняется 
+        //TODO: не получается убрать надпись "Поле не должно быть пустым", не меняется
         private bool _isNameEmpty;
         public bool IsNameEmpty
         {
