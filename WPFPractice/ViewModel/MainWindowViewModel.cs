@@ -58,7 +58,7 @@ namespace WPFPractice.ViewModel
                   }));
             } 
         }
-        //TODO: Сделать MessageBox в DialogService 
+        //TODO: Сделать MessageBox в DialogService i
         public RelayCommand _deleteItem;
         public RelayCommand DeleteItem
         {
