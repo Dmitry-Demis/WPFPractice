@@ -11,8 +11,18 @@ using WPFPractice.View;
 
 namespace WPFPractice.ViewModel
 {
-    class ChangeParameterViewModel : BaseViewModel, ICloseWindows, IDialogRequestClose
+    class ChangeParameterViewModel : BaseViewModel, ICloseWindows
     {
+
+        private readonly IDialogService dialogService;
+        public ChangeParameterViewModel()
+        {
+
+        }
+        public ChangeParameterViewModel(IDialogService dialogService)
+        {
+            this.dialogService = dialogService;
+        }
         /// <summary>
         /// Values - наблюдаемая коллекция значений элементов
         /// </summary>
@@ -33,9 +43,8 @@ namespace WPFPractice.ViewModel
                 return _addItem ??
                        (_addItem = new RelayCommand(() =>
                        {
-                           AddingOfElementWindowViewModel viewModel = new AddingOfElementWindowViewModel();
-                           AddingOfElementWindow window = new AddingOfElementWindow { DataContext = viewModel };
-                           window.ShowDialog();
+                           EditNameViewModel viewModel = new EditNameViewModel();
+                           dialogService.ShowDialog(viewModel);
                            if (!string.IsNullOrEmpty(viewModel.Name))
                            {
                                CurrentItem = viewModel.Name;
@@ -90,11 +99,9 @@ namespace WPFPractice.ViewModel
                 return _changeItem ??
                        (_changeItem = new RelayCommand(() =>
                            {
-                               AddingOfElementWindowViewModel viewModel = new AddingOfElementWindowViewModel();
+                               EditNameViewModel viewModel = new EditNameViewModel();
                                viewModel.Name = CurrentItem;
-                               var index = Values.IndexOf(CurrentItem);
-                               AddingOfElementWindow window = new AddingOfElementWindow { DataContext = viewModel };
-                               window.ShowDialog();
+                               var index = Values.IndexOf(CurrentItem); 
                                if (!string.IsNullOrEmpty(viewModel.Name))
                                {
                                    CurrentItem = viewModel.Name;
@@ -175,9 +182,6 @@ namespace WPFPractice.ViewModel
         /// Команда отмены
         /// </summary>
         private RelayCommand _cancelCommand;
-
-        public event EventHandler<DialogCloseRequestedEventArgs> CloseRequested;
-
         public RelayCommand CancelCommand
             => _cancelCommand ?? (_cancelCommand = new RelayCommand(CloseWindow));
         public bool CanClose() => true;

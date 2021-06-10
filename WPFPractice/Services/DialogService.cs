@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Windows;
 
 namespace WPFPractice.Model
@@ -16,7 +17,7 @@ namespace WPFPractice.Model
 
         public IDictionary<Type, Type> Mappings { get; }
 
-        public void Register<TViewModel, TView>() where TViewModel : IDialogRequestClose
+        public void Register<TViewModel, TView>() where TViewModel : INotifyPropertyChanged
                                                   where TView : IDialog
         {
             if (Mappings.ContainsKey(typeof(TViewModel)))
@@ -27,18 +28,14 @@ namespace WPFPractice.Model
             Mappings.Add(typeof(TViewModel), typeof(TView));
         }
 
-        public bool? ShowDialog<TViewModel>(TViewModel viewModel) where TViewModel : IDialogRequestClose
+        public bool? ShowDialog<TViewModel>(TViewModel viewModel) where TViewModel : INotifyPropertyChanged
         {
             Type viewType = Mappings[typeof(TViewModel)];
-
             IDialog dialog = (IDialog)Activator.CreateInstance(viewType);
-
-            EventHandler<DialogCloseRequestedEventArgs> handler = null;
-
+         /*   EventHandler<DialogCloseRequestedEventArgs> handler = null;
             handler = (sender, e) =>
             {
                 viewModel.CloseRequested -= handler;
-
                 if (e.DialogResult.HasValue)
                 {
                     dialog.DialogResult = e.DialogResult;
@@ -48,12 +45,18 @@ namespace WPFPractice.Model
                     dialog.Close();
                 }
             };
-
-            viewModel.CloseRequested += handler;
-
+            viewModel.CloseRequested += handler;*/
             dialog.DataContext = viewModel;
             dialog.Owner = owner;
+            return dialog.ShowDialog();
+        }
 
+        public bool? ShowMessageBoxDialog<TViewModel>(TViewModel viewModel) where TViewModel : INotifyPropertyChanged
+        {
+            Type viewType = Mappings[typeof(TViewModel)];
+            IDialog dialog = (IDialog)Activator.CreateInstance(viewType);
+            dialog.DataContext = viewModel;
+            dialog.Owner = owner;
             return dialog.ShowDialog();
         }
     }

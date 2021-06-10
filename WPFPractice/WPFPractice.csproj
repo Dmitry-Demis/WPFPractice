@@ -61,7 +61,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="View\AddingOfElementWindow.xaml">
+    <Page Include="View\EditNameWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -83,20 +83,18 @@
     <Compile Include="BindingEnums\ParameterType.cs" />
     <Compile Include="BindingEnums\EnumBindingSourceExtension.cs" />
     <Compile Include="BindingEnums\EnumDescriptionTypeConverter.cs" />
-    <Compile Include="Model\DialogCloseRequestedEventArgs.cs" />
-    <Compile Include="Model\DialogService.cs" />
-    <Compile Include="Model\ICloseWindows.cs" />
-    <Compile Include="Model\IDialog.cs" />
-    <Compile Include="Model\IDialogRequestClose.cs" />
-    <Compile Include="Model\IDialogService.cs" />
+    <Compile Include="Services\DialogService.cs" />
+    <Compile Include="Interfaces\ICloseWindows.cs" />
+    <Compile Include="Interfaces\IDialog.cs" />
+    <Compile Include="Interfaces\IDialogService.cs" />
     <Compile Include="Model\Parameter.cs" />
     <Compile Include="Model\WindowCloser.cs" />
-    <Compile Include="ViewModel\AddingOfElementWindowViewModel.cs" />
+    <Compile Include="ViewModel\EditNameViewModel.cs" />
     <Compile Include="ViewModel\ChangeParameterViewModel.cs" />
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
-    <Compile Include="ViewModel\BaseViewModel.cs" />
-    <Compile Include="View\AddingOfElementWindow.xaml.cs">
-      <DependentUpon>AddingOfElementWindow.xaml</DependentUpon>
+    <Compile Include="ViewModel\BaseViewModel\BaseViewModel.cs" />
+    <Compile Include="View\EditNameWindow.xaml.cs">
+      <DependentUpon>EditNameWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\ChangeParameterWindow.xaml.cs">
       <DependentUpon>ChangeParameterWindow.xaml</DependentUpon>

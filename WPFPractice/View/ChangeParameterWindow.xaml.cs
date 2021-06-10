@@ -18,7 +18,7 @@ namespace WPFPractice.View
     /// <summary>
     /// Interaction logic for ListOfData.xaml
     /// </summary>
-    public partial class ChangeParameterWindow : Window, IDialog //Rem: [solved] название ListOfData не сильно говорящее 
+    public partial class ChangeParameterWindow : Window, IDialog
     {
         public ChangeParameterWindow()
         {

@@ -20,13 +20,11 @@ namespace WPFPractice.View
     /// <summary>
     /// Interaction logic for AddingOfElementWindow.xaml
     /// </summary>
-    public partial class AddingOfElementWindow : Window, IDialog
+    public partial class EditNameWindow : Window, IDialog
     {
-        public AddingOfElementWindow()
+        public EditNameWindow()
         {
             InitializeComponent();            
         }
-        //Rem: [solved] дублирование. Можно сделать прикрепляемым св-вом https://www.youtube.com/watch?v=U7Qclpe2joo
-       
     }
 }

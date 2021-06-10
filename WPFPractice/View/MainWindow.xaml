@@ -112,7 +112,7 @@
                             <GradientStop Color="White" Offset="1"/>
                         </LinearGradientBrush>
                     </Path.Fill>
-                </Path>
+                </Path>                
             </Button>
         </ToolBar>
        
@@ -129,7 +129,6 @@
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding SelectedParameterType}"/>
-                                    <!--Rem:[solved] -->
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                             <DataGridTemplateColumn.CellEditingTemplate>
@@ -146,7 +145,6 @@
                                         Content ="Список..."
                                         Command ="{Binding RelativeSource={RelativeSource AncestorType={x:Type DataGrid}}, Path=DataContext.ChangeParameterCommand}"
                                         CommandParameter="{Binding}"/>
-                                    <!--Rem: [solved] зачем привязывать IsEnabled?-->
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                         </DataGridTemplateColumn>
@@ -155,7 +153,6 @@
             </ScrollViewer>
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Visibility="{Binding IsTableEmpty, Converter = {StaticResource VisibilityConverter}}">
                 <Image Source="/Images/emptyTable.png" Height="100" Width="100"/>
-                <!--Rem: [solved] относительная ссылка -->
                  <TextBlock VerticalAlignment="Center" HorizontalAlignment="Center"> В таблице пусто</TextBlock>
             </StackPanel>
         </Grid>

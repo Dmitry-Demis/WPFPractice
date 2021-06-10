@@ -18,25 +18,12 @@ namespace WPFPractice
     {
         protected override void OnStartup(StartupEventArgs e)
         {
-           
             IDialogService dialogService = new DialogService(MainWindow);
-            dialogService.Register<AddingOfElementWindowViewModel, AddingOfElementWindow>();
+            dialogService.Register<EditNameViewModel, EditNameWindow>();
             dialogService.Register<ChangeParameterViewModel, ChangeParameterWindow>();
             var viewModel = new MainWindowViewModel(dialogService);
-            var view = new MainWindow { DataContext = viewModel };
-
+            var view = new MainWindow { DataContext = viewModel };            
             view.ShowDialog();
-
-
-
-
-            //Rem: что-то подобное д.получиться
-            //IDialogService dialogService = new DialogService(MainWindow);
-            //dialogService.Register<ListEditViewModel, ListEditWindow>();
-            //dialogService.Register<LineEditViewModel, LineEditWindow>();
-            //var viewModel = new MainWindowViewModel(dialogService);
-            //var view = new MainWindow { DataContext = viewModel };
-            //view.ShowDialog();
         }
     }
 }

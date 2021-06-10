@@ -1,17 +1,20 @@
-﻿<Window x:Class="WPFPractice.View.AddingOfElementWindow"
+﻿<Window x:Class="WPFPractice.View.EditNameWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFPractice.ViewModel"
+        xmlns:model ="clr-namespace:WPFPractice.Model"
         mc:Ignorable="d"
-        Title="Добавление элемента" Height="150" Width="300"
+        Title="Добавление элемента в таблицу" Height="150" Width="300"
         WindowStartupLocation="CenterScreen"
         x:Name="TestWindow"
-        xmlns:model ="clr-namespace:WPFPractice.Model"
         model:WindowCloser.EnableWindowClosing="True">
+    <Window.Resources>
+        <local:BoolToVisibilityEditNameConverter x:Key="BoolEditCon"/>
+    </Window.Resources>
     <Window.DataContext>
-        <local:AddingOfElementWindowViewModel/>
+        <local:EditNameViewModel/>
     </Window.DataContext>
     <Window.InputBindings>
         <KeyBinding Key="Enter"  Command="{Binding CloseCommand}"/>
@@ -19,11 +22,10 @@
     </Window.InputBindings>
     <StackPanel Margin="5">
         <TextBlock Text="Введите строку:" Margin="5"/>
-        <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"/>
-        <TextBlock Text="Поле должно быть не пустым" Foreground="Red"/>
+        <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBlock Text="Поле не может быть пустым" Foreground="Red" Visibility="{Binding IsNameEmpty, Converter={StaticResource BoolEditCon}, UpdateSourceTrigger=PropertyChanged}"/>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">
-            <Button Content="OК" Margin="5" Padding="5" Width="70" Command="{Binding CloseCommand}"
-                   />
+            <Button Content="OК" Margin="5" Padding="5" Width="70" Command="{Binding CloseCommand}"/>
             <Button Content="Отмена" Margin="5" Padding="5" Width="70" Command="{Binding CancelCommand}"/>
         </StackPanel>
     </StackPanel>

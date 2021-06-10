@@ -22,41 +22,9 @@ namespace WPFPractice.ViewModel
 
         public MainWindowViewModel(IDialogService dialogService)
         {
-            this.dialogService = dialogService;
-            DisplayMessageCommand = new RelayCommand(() => DisplayMessage());
-        }
-        public ICommand DisplayMessageCommand { get; }
-
-        private void DisplayMessage()
-        {
-     /*       var viewModel = new DialogViewModel("Hello!");
-
-            bool? result = dialogService.ShowDialog(viewModel);
-
-            if (result.HasValue)
-            {
-                if (result.Value)
-                {
-                    // Accepted
-                }
-                else
-                {
-                    // Cancelled
-                }
-            }*/
-        }
+            this.dialogService = dialogService;          
+        }       
         public ObservableCollection<Parameter> Parameters { get; set; } = new ObservableCollection<Parameter>();
-        
-
-        private string _name;
-        public string Name
-        {
-            get => _name;
-            set
-            {
-                SetProperty(ref _name, value);
-            }
-        }
         private Parameter _currentParameter; 
         public Parameter CurrentParameter
         {
@@ -75,10 +43,8 @@ namespace WPFPractice.ViewModel
                 return _addItem ??
                   (_addItem = new RelayCommand( ()=>
                   {
-
-                      AddingOfElementWindowViewModel viewModel = new AddingOfElementWindowViewModel();
-                      AddingOfElementWindow window = new AddingOfElementWindow { DataContext = viewModel };
-                      window.ShowDialog();              //Rem: где использование DialogService'а и проверка результата bool?
+                      EditNameViewModel viewModel = new EditNameViewModel();
+                      dialogService.ShowDialog(viewModel);
                       if (!string.IsNullOrEmpty(viewModel.Name))
                       {
                          Parameter parameter = new Parameter();
@@ -87,13 +53,12 @@ namespace WPFPractice.ViewModel
                           parameter.Strings = new List<string>();
                           CurrentParameter = parameter;
                           Parameters.Add(CurrentParameter);
-                          IsTableEmpty = false;
-                        
+                          IsTableEmpty = false;                        
                       }
                   }));
             } 
         }
-
+        //TODO: Сделать MessageBox в DialogService 
         public RelayCommand _deleteItem;
         public RelayCommand DeleteItem
         {
@@ -136,18 +101,18 @@ namespace WPFPractice.ViewModel
             {
                 return _upCommand ??
                        (_upCommand = new RelayCommand(() =>
-                           {
+                       {
                                var curr = CurrentParameter;
                                var index1 = Parameters.IndexOf(curr);
                                var secondElement = Parameters.ElementAt(index1 - 1);
                                Parameters[index1] = secondElement;
                                Parameters[index1 - 1] = curr;
                                CurrentParameter = curr;
-                           },
-                           () =>
-                           {
-                               return CurrentParameter!=null && CurrentParameter != Parameters?[0]; //Rem: Parameters[0]? а если Count == 0
-                           })); 
+                       },
+                    () =>
+                    {
+                        return CurrentParameter!=null && CurrentParameter != Parameters?[0];
+                    })); 
             }
         }
 
@@ -172,40 +137,34 @@ namespace WPFPractice.ViewModel
                            }));
             }
         }
-
-        //TODO: Реализовать команду открытия нового окна на основе значений DataGrid [Сложности с привязкой к различным данным]
-
+        //TODO: Значения не сохраняются в окне
         private RelayCommand<Parameter> _changeParameterCommand;
-        public RelayCommand<Parameter> ChangeParameterCommand //Rem: [solved] именование д.обозначать действие, а так не оч.понятно - нужно обращать внимание на то, что возвращает св-во
+        public RelayCommand<Parameter> ChangeParameterCommand
         {
             get
             {
                 return _changeParameterCommand ??
                        (_changeParameterCommand = new RelayCommand<Parameter>((param) =>
-                           {
-                               //Rem: И здесь редактируем конкретный параметр
+                        {
+                            //Rem: И здесь редактируем конкретный параметр
+                            ChangeParameterViewModel viewModel = new ChangeParameterViewModel(dialogService);
+                            dialogService.ShowDialog(viewModel);
 
-                               ChangeParameterViewModel viewModel = new ChangeParameterViewModel();
-                               ChangeParameterWindow window = new ChangeParameterWindow { DataContext = viewModel };
-                               window.ShowDialog();
-
-                           },
-                           (param) =>
-                           {
-                                if (param == null)
-                               {
-                                   return false;
-                               }
-                               return param.SelectedParameterType == ParameterType.SetFromList || param.SelectedParameterType == ParameterType.ValueFromList;
+                        },
+                    (param) =>
+                    {
+                        if (param == null)
+                        {
+                            return false;
+                        }
+                        return param.SelectedParameterType == ParameterType.SetFromList || param.SelectedParameterType == ParameterType.ValueFromList;
                               
-                           }));
-            }
-           
+                    }));
+            }           
         }
-
+        
         private bool _isTableEmpty = true;
-        public bool IsTableEmpty //Rem: [solved] Visibility это плохо для MVVM паттерна -> bool + конвертор в XAML
-                                        //Rem: это вычисляемое св-во
+        public bool IsTableEmpty 
         {
             get
             {
@@ -214,10 +173,8 @@ namespace WPFPractice.ViewModel
             private set
             {
                 SetProperty(ref _isTableEmpty, value);
-            }
-           
+            }           
         }
-
     }
     /// <summary>
     ///  There's a converter which a bool value replaces by Visibility 
