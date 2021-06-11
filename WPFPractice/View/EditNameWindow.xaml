@@ -10,8 +10,8 @@
         WindowStartupLocation="CenterScreen"
         x:Name="TestWindow"
         model:WindowCloser.EnableWindowClosing="True">
-    <Window.Resources>
-        <local:BoolToVisibilityEditNameConverter x:Key="BoolEditCon"/>
+    <Window.Resources>        
+        <BooleanToVisibilityConverter x:Key="BoolEditCon"/>
     </Window.Resources>
     <Window.DataContext>
         <local:EditNameViewModel/>
@@ -23,7 +23,7 @@
     <StackPanel Margin="5">
         <TextBlock Text="Введите строку:" Margin="5"/>
         <TextBox Text="{Binding Name, UpdateSourceTrigger=PropertyChanged}"/>
-        <TextBlock Text="Поле не может быть пустым" Foreground="Red" Visibility="{Binding IsNameEmpty, Converter={StaticResource BoolEditCon}, UpdateSourceTrigger=PropertyChanged}"/>
+        <TextBlock Text="[Поле не может быть пустым]" Foreground="Red" Visibility="{Binding IsNameEmpty, Converter={StaticResource BoolEditCon}}"/>
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="5">
             <Button Content="OК" Margin="5" Padding="5" Width="70" Command="{Binding CloseCommand}"/>
             <Button Content="Отмена" Margin="5" Padding="5" Width="70" Command="{Binding CancelCommand}"/>
