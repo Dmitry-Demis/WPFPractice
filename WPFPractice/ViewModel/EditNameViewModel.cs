@@ -60,7 +60,6 @@ namespace WPFPractice.ViewModel
                 Close?.Invoke();
                 Name = null;
             }));
-
         /*private readonly IDialogService dialogService;
         public EditNameViewModel()
         {
@@ -70,7 +69,6 @@ namespace WPFPractice.ViewModel
         {
             this.dialogService = dialogService;
         }        
-        //TODO: [solved] не получается убрать надпись "Поле не должно быть пустым", не меняется
-*/
+        //TODO: [solved] не получается убрать надпись "Поле не должно быть пустым", не меняется*/
     }   
 }
