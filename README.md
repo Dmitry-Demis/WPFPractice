@@ -23,3 +23,5 @@
 1. Property Name. Adding OnPropertyChanged(nameof(IsNameEmpty));
 2. IsNameEmpty →  get => string.IsNullOrEmpty(Name) || string.IsNullOrWhiteSpace(Name);
 3. CloseCommand → !IsNameEmpty
+### MainWindowViewModel.cs
+1. Adding Save and Open File Dialogs
