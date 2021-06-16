@@ -11,3 +11,5 @@
 ### Parameter.cs
 1. Adding comments
 2. SelectedParameterType → ParameterType
+### ChangeParameterViewModel.cs
+1. ChangeParameterViewModel.cs → EditValuesListViewModel
