@@ -11,5 +11,15 @@
 ### Parameter.cs
 1. Adding comments
 2. SelectedParameterType → ParameterType
-### ChangeParameterViewModel.cs
+### ChangeParameterViewModel.cs, ChangeParameterWindow.xaml
 1. ChangeParameterViewModel.cs → EditValuesListViewModel
+2. ChangeParameterWindow.xaml → EditValuesListWindow
+### RelayCommand.cs, RelayCommandT.cs
+1. public RelayCommand() → protected RelayCommand()
+2. Adding CanExecute in an Execute function
+### EditValuesListViewModel.cs
+1. Adding dialogue sevrice for a message box
+### EditNameViewModel.cs
+1. Property Name. Adding OnPropertyChanged(nameof(IsNameEmpty));
+2. IsNameEmpty →  get => string.IsNullOrEmpty(Name) || string.IsNullOrWhiteSpace(Name);
+3. CloseCommand → !IsNameEmpty
