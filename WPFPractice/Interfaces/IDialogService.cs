@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using MvvmDialogs.FrameworkDialogs.SaveFile;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Windows;
 
 namespace WPFPractice.Model
 {
@@ -12,6 +9,10 @@ namespace WPFPractice.Model
         void Register<TViewModel, TView>() where TViewModel : INotifyPropertyChanged
                                            where TView : IDialog;
         bool? ShowDialog<TViewModel>(TViewModel viewModel) where TViewModel : INotifyPropertyChanged;
-        bool? ShowMessageBoxDialog<TViewModel>(TViewModel viewModel) where TViewModel : INotifyPropertyChanged;
+        MessageBoxResult ShowMessageBoxDialog(string caption, string text);
+        void ShowMessageBoxDialog(string caption);
+        string FilePath { get; set; }   // путь к выбранному файлу
+        bool OpenFileDialog();  // открытие файла
+        bool SaveFileDialog();  // сохранение файла
     }
 }

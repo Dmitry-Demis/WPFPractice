@@ -14,7 +14,13 @@ namespace WPFPractice.Cmds
             _canExecute = canExecute;
         }
         public override bool CanExecute(object parameter) => _canExecute == null || _canExecute((T)parameter);
-        public override void Execute(object parameter) { _execute((T)parameter); }
+        public override void Execute(object parameter) 
+        {
+            if (CanExecute(parameter))
+            {
+                _execute((T)parameter);
+            }                 
+        }
 
     }
 }

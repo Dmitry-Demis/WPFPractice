@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using WPFPractice.BindingEnums;
 
 namespace WPFPractice.Model
@@ -7,16 +8,17 @@ namespace WPFPractice.Model
     public class Parameter
     {
         /// <summary>
-        /// Name is a name of parameter
+        /// Name
         /// </summary>
         public string Name { get; set; }
         /// <summary>
-        /// SelectedParameterType is a type in a combobox, a default value
+        /// A parameter type
         /// </summary>
-        public ParameterType SelectedParameterType { get; set; } = ParameterType.SimpleString;
-        public List<string> Strings { get; set; }
+        public ParameterType ParameterType { get; set; } = ParameterType.SimpleString;
+        /// <summary>
+        /// A list of string values
+        /// </summary>
+        public ObservableCollection<string> ValuesList { get; set; }
     }
-
-    //Rem:
-    //- комментарии
+    //Rem: [solved] комментарии
 }

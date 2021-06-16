@@ -1,29 +1,29 @@
-﻿using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Collections.ObjectModel;
-using System;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
 using WPFPractice.Model;
 using WPFPractice.Cmds;
-using System.Windows.Controls.Primitives;
-using WPFPractice.View;
-using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Data;
-using System.Globalization;
 using WPFPractice.BindingEnums;
-using System.Windows.Input;
+using MvvmDialogs.FrameworkDialogs.SaveFile;
+using System;
+using WPFPractice.Interfaces;
 
 namespace WPFPractice.ViewModel
 {
     public class MainWindowViewModel : BaseViewModel
     {
+        /// <summary>
+        /// Services
+        /// </summary>
         private readonly IDialogService dialogService;
+        private readonly IFileService fileService;
 
-        public MainWindowViewModel(IDialogService dialogService)
+        public MainWindowViewModel(IDialogService dialogService, IFileService fileService)
         {
-            this.dialogService = dialogService;          
+            this.dialogService = dialogService;
+            this.fileService = fileService;
         }       
+
         /// <summary>
         /// Parameters - a collection of parametres in a data table
         /// </summary>
@@ -53,8 +53,11 @@ namespace WPFPractice.ViewModel
             {
                 SetProperty(ref _currentParameter, value);
             }
-        }        
-        public bool IsEnabled { get; set; } = true;
+        }
+
+        /// <summary>
+        /// A command of adding item to the list of parameters
+        /// </summary>
         private RelayCommand _addItem;
         public RelayCommand AddItem
         {
@@ -65,20 +68,23 @@ namespace WPFPractice.ViewModel
                   {
                       EditNameViewModel viewModel = new EditNameViewModel();
                       dialogService.ShowDialog(viewModel);
-                      if (!string.IsNullOrEmpty(viewModel.Name))
+                      if (viewModel.Name!=null)
                       {
-                         Parameter parameter = new Parameter();
+                          Parameter parameter = new Parameter();
                           parameter.Name = viewModel.Name;
-                          parameter.SelectedParameterType = ParameterType.SimpleString;
-                          parameter.Strings = new List<string>();
+                          parameter.ParameterType = ParameterType.SimpleString;
+                          parameter.ValuesList = new ObservableCollection<string>();
                           CurrentParameter = parameter;
                           Parameters.Add(CurrentParameter);
-                          IsTableEmpty = false;                        
+                          OnPropertyChanged(nameof(IsTableEmpty));
                       }
                   }));
             } 
         }
-        //TODO: Сделать MessageBox в DialogService
+
+        /// <summary>
+        /// A command of deleting item from the list of parameters
+        /// </summary>
         public RelayCommand _deleteItem;
         public RelayCommand DeleteItem
         {
@@ -87,34 +93,20 @@ namespace WPFPractice.ViewModel
                 return _deleteItem ??
                        (_deleteItem = new RelayCommand(() =>
                            {
-                               if (CurrentParameter==null)
-                               {
-                                   return;
-                               }
-                               string msg = $"Вы правда хотите удалить элемент {CurrentParameter.Name}?";
-                               MessageBoxResult messageBoxResult = MessageBox.Show(msg, "Удаление элемента из таблицы", //Rem: а где использование DialogService'а
-                                   MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                               if (messageBoxResult == MessageBoxResult.Yes)
-                               {
+                               if (dialogService.ShowMessageBoxDialog("Удаление элемента из таблицы", $"Вы правда хотите удалить элемент {CurrentParameter.Name}?") == MessageBoxResult.Yes)
                                    Parameters.Remove(CurrentParameter);
-                               }
-                               else
-                               {
-                                   return;
-                               }
-                               IsTableEmpty = (Parameters.Count == 0) ? true : false;
-
-
                            },
                            () =>
                            {
-                               return Parameters.Count > 0;
+                               return CurrentParameter != null && Parameters.Count > 0;
                            }));
             }
         }
 
+        /// <summary>
+        /// A command, which raises the element 
+        /// </summary>
         private RelayCommand _upCommand;
-
         public RelayCommand UpCommand
         {
             get
@@ -122,20 +114,22 @@ namespace WPFPractice.ViewModel
                 return _upCommand ??
                        (_upCommand = new RelayCommand(() =>
                        {
-                               var curr = CurrentParameter;
-                               var index1 = Parameters.IndexOf(curr);
-                               var secondElement = Parameters.ElementAt(index1 - 1);
-                               Parameters[index1] = secondElement;
-                               Parameters[index1 - 1] = curr;
-                               CurrentParameter = curr;
+                           var currParameter = CurrentParameter;
+                           var indexOfcurrItem = Parameters.IndexOf(currParameter);
+                           var nextElement = Parameters.ElementAt(indexOfcurrItem - 1);
+                           Parameters[indexOfcurrItem] = nextElement;
+                           Parameters[indexOfcurrItem - 1] = currParameter;
+                           CurrentParameter = currParameter;
                        },
-                    () =>
-                    {
-                        return CurrentParameter!=null && CurrentParameter != Parameters?[0];
-                    })); 
+                           () =>
+                           {
+                               return CurrentParameter != null && CurrentParameter != Parameters?[0];
+                           }));
             }
         }
-
+        /// <summary>
+        /// A command, which lowers the element down
+        /// </summary>
         private RelayCommand _downCommand;
         public RelayCommand DownCommand
         {
@@ -144,12 +138,12 @@ namespace WPFPractice.ViewModel
                 return _downCommand ??
                        (_downCommand = new RelayCommand(() =>
                            {
-                               var curr = CurrentParameter;
-                               var index1 = Parameters.IndexOf(curr);
-                               var secondElement = Parameters.ElementAt(index1 + 1);
-                               Parameters[index1] = secondElement;
-                               Parameters[index1 + 1] = curr;
-                               CurrentParameter = curr;
+                               var currParameter = CurrentParameter;
+                               var indexOfcurrItem = Parameters.IndexOf(currParameter);
+                               var nextElement = Parameters.ElementAt(indexOfcurrItem + 1);
+                               Parameters[indexOfcurrItem] = nextElement;
+                               Parameters[indexOfcurrItem + 1] = currParameter;
+                               CurrentParameter = currParameter;
                            },
                            () =>
                            {
@@ -157,7 +151,10 @@ namespace WPFPractice.ViewModel
                            }));
             }
         }
-        //TODO: Значения не сохраняются в окне
+
+        /// <summary>
+        /// A command, which can change a selected parameter
+        /// </summary>
         private RelayCommand<Parameter> _changeParameterCommand;
         public RelayCommand<Parameter> ChangeParameterCommand
         {
@@ -166,35 +163,75 @@ namespace WPFPractice.ViewModel
                 return _changeParameterCommand ??
                        (_changeParameterCommand = new RelayCommand<Parameter>((param) =>
                         {
-                            //Rem: И здесь редактируем конкретный параметр
-                            ChangeParameterViewModel viewModel = new ChangeParameterViewModel(dialogService);
+                            EditValuesListViewModel viewModel = new EditValuesListViewModel(dialogService, param);
                             dialogService.ShowDialog(viewModel);
-
                         },
                     (param) =>
                     {
-                        if (param == null)
-                        {
-                            return false;
-                        }
-                        return param.SelectedParameterType == ParameterType.SetFromList || param.SelectedParameterType == ParameterType.ValueFromList;
+                        return param?.ParameterType == ParameterType.SetFromList || param?.ParameterType == ParameterType.ValueFromList;
                               
                     }));
             }           
         }
-        
-        private bool _isTableEmpty = true;
-        public bool IsTableEmpty 
+
+        /// <summary>
+        /// Checking if the table empty or not
+        /// </summary>
+        public bool IsTableEmpty => Parameters.Count == 0;
+
+        /// <summary>
+        /// A command, which allows to save a datatable
+        /// </summary>
+        private RelayCommand _saveFileDialogCommand;
+        public RelayCommand SaveFileDialogCommand 
+        { 
+            get
+            {
+                return _saveFileDialogCommand ??
+                       (_saveFileDialogCommand = new RelayCommand(() =>
+                       {
+                           try
+                           {
+                               if (dialogService.SaveFileDialog()==true)
+                               {
+                                   fileService.Save(dialogService.FilePath, Parameters.ToList());
+                                   dialogService.ShowMessageBoxDialog("Файл сохранен");
+                               }
+                           }
+                           catch (Exception ex)
+                           {
+                               dialogService.ShowMessageBoxDialog(ex.Message);
+                           }                          
+                       }));
+            }
+        }
+        private RelayCommand<Parameter> _openFileDialogCommand;
+        public RelayCommand<Parameter> OpenFileDialogCommand
         {
             get
             {
-                return (Parameters.Count == 0);
+                return _openFileDialogCommand ??
+                  (_openFileDialogCommand = new RelayCommand<Parameter>((param) =>
+                  {
+                      try
+                      {
+                          if (dialogService.OpenFileDialog() == true)
+                          {
+                              var parameters = fileService.Open(dialogService.FilePath);
+                              Parameters.Clear();
+                              foreach (var p in parameters)
+                                  Parameters.Add(p);
+                              dialogService.ShowMessageBoxDialog("Файл открыт");
+                          }
+                      }
+                      catch (Exception ex)
+                      {
+                          dialogService.ShowMessageBoxDialog(ex.Message);
+                      }
+                  }));
             }
-            private set
-            {
-                SetProperty(ref _isTableEmpty, value);
-            }           
         }
     }
+
 }
 

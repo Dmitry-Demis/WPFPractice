@@ -10,20 +10,23 @@
         xmlns:sys="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"      
         Title="Дополнительные параметры" MinHeight="300" MinWidth="150"
-        model:WindowCloser.EnableWindowClosing="True">
-
+        model:WindowCloser.EnableWindowClosing="True"
+        ShowInTaskbar="False">
+    <Window.InputBindings>
+        <KeyBinding Command="{Binding OpenFileDialogCommand}" Modifiers="Ctrl" Key="O"/>
+        <KeyBinding Command="{Binding SaveFileDialogCommand}" Modifiers="Ctrl" Key="S"/>
+    </Window.InputBindings>
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="VisibilityConverter"/>
     </Window.Resources>
     <DockPanel LastChildFill="True" >
         <Menu DockPanel.Dock="Top">
             <MenuItem Header="_Файл">
-                <MenuItem Header="Открыть" InputGestureText="Ctrl+O"/>
-                <MenuItem  Header="Сохранить" InputGestureText="Ctrl+S"/>
+                <MenuItem Header="Открыть" InputGestureText="Ctrl+O" Command="{Binding OpenFileDialogCommand}"/>
+                <MenuItem  Header="Сохранить" InputGestureText="Ctrl+S" Command="{Binding SaveFileDialogCommand}"/>
                 <Separator/>
                 <MenuItem  Header="Закрыть"
-                          InputGestureText="Alt+F4"
-                          />
+                          InputGestureText="Alt+F4"/>
             </MenuItem>
             <MenuItem Header="_Изменить">
                 <MenuItem Command="ApplicationCommands.Copy" Header="Копировать"/>
@@ -128,13 +131,13 @@
                         <DataGridTemplateColumn Header="Тип" Width="2*">
                             <DataGridTemplateColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding SelectedParameterType}"/>
+                                    <TextBlock Text="{Binding ParameterType}"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellTemplate>
                             <DataGridTemplateColumn.CellEditingTemplate>
                                 <DataTemplate>
                                     <ComboBox ItemsSource="{Binding Source={enumcmb:EnumBindingSource {x:Type enumcmb:ParameterType}}, UpdateSourceTrigger=PropertyChanged}"
-                                              SelectedItem="{Binding SelectedParameterType, Mode=TwoWay}"/>
+                                              SelectedItem="{Binding ParameterType, Mode=TwoWay}"/>
                                 </DataTemplate>
                             </DataGridTemplateColumn.CellEditingTemplate>
                         </DataGridTemplateColumn>

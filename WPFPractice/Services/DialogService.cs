@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Microsoft.Win32;
+using MvvmDialogs.FrameworkDialogs.SaveFile;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Windows;
@@ -32,32 +34,45 @@ namespace WPFPractice.Model
         {
             Type viewType = Mappings[typeof(TViewModel)];
             IDialog dialog = (IDialog)Activator.CreateInstance(viewType);
-         /*   EventHandler<DialogCloseRequestedEventArgs> handler = null;
-            handler = (sender, e) =>
-            {
-                viewModel.CloseRequested -= handler;
-                if (e.DialogResult.HasValue)
-                {
-                    dialog.DialogResult = e.DialogResult;
-                }
-                else
-                {
-                    dialog.Close();
-                }
-            };
-            viewModel.CloseRequested += handler;*/
             dialog.DataContext = viewModel;
             dialog.Owner = owner;
             return dialog.ShowDialog();
         }
 
-        public bool? ShowMessageBoxDialog<TViewModel>(TViewModel viewModel) where TViewModel : INotifyPropertyChanged
+        public MessageBoxResult ShowMessageBoxDialog(string caption, string text)
         {
-            Type viewType = Mappings[typeof(TViewModel)];
-            IDialog dialog = (IDialog)Activator.CreateInstance(viewType);
-            dialog.DataContext = viewModel;
-            dialog.Owner = owner;
-            return dialog.ShowDialog();
+            return MessageBox.Show(text, caption, MessageBoxButton.YesNo, MessageBoxImage.Warning);
         }
+        public string FilePath { get; set; }
+
+        public bool OpenFileDialog()
+        {
+            OpenFileDialog openFileDialog = new OpenFileDialog();
+            openFileDialog.Filter = "txt files (*.txt)|*.txt|comma serapated values (*.csv)|*.csv";
+            if (openFileDialog.ShowDialog() == true)
+            {
+                FilePath = openFileDialog.FileName;
+                return true;
+            }
+            return false;
+        }
+
+        public bool SaveFileDialog()
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            saveFileDialog.FileName = "result";
+            saveFileDialog.Filter = "txt files (*.txt)|*.txt|comma serapated values (*.csv)|*.csv";
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                FilePath = saveFileDialog.FileName;
+                return true;
+            }
+            return false;
+        }
+        public void ShowMessageBoxDialog(string message)
+        {
+            MessageBox.Show(message);
+        }
+
     }
 }
