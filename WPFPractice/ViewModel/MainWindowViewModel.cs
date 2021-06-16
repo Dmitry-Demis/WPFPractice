@@ -232,6 +232,5 @@ namespace WPFPractice.ViewModel
             }
         }
     }
-
 }
 
