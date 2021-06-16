@@ -7,7 +7,7 @@
 1. A converter from Visibility to Boolean has been replaced by **"BooleanToVisibilityConverter"**
 
 
-## *NOT READY* v. 1.0.1
+## v. 1.0.1
 ### Parameter.cs
 1. Adding comments
 2. SelectedParameterType → ParameterType
