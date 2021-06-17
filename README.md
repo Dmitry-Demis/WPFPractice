@@ -1,4 +1,9 @@
 # WPFPractice
+## v. 1.0.2
+### MainWindowViewModel.cs
+1. Adding Save when "Close" in the menu is pressed
+2. "X" closes the window without savings
+
 ## v. 1.0.1
 ### Parameter.cs
 1. Adding comments
