@@ -40,6 +40,7 @@ namespace WPFPractice.ViewModel
             {
                 ValueList.Add(value);
             }
+            CurrentItem = ValueList?.Count > 0 ? ValueList[0] : null;
         }
 
         /// <summary>
@@ -50,7 +51,12 @@ namespace WPFPractice.ViewModel
         /// <summary>
         /// Current item
         /// </summary>
-        public string CurrentItem { get; set; }
+        private string _currentItem;
+        public string CurrentItem
+        {
+            get => _currentItem;
+            set => SetProperty(ref _currentItem, value); 
+        }
 
         /// <summary>
         /// A command of adding item to the list of values

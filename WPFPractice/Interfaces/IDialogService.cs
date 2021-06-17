@@ -12,7 +12,7 @@ namespace WPFPractice.Model
         MessageBoxResult ShowMessageBoxDialog(string caption, string text);
         void ShowMessageBoxDialog(string caption);
         string FilePath { get; set; }   // путь к выбранному файлу
-        bool OpenFileDialog();  // открытие файла
-        bool SaveFileDialog();  // сохранение файла
+        bool OpenFileDialog(string filter);  // открытие файла
+        bool SaveFileDialog(string filter);  // сохранение файла
     }
 }

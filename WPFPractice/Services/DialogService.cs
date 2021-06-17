@@ -45,10 +45,10 @@ namespace WPFPractice.Model
         }
         public string FilePath { get; set; }
 
-        public bool OpenFileDialog()
+        public bool OpenFileDialog(string filter)
         {
             OpenFileDialog openFileDialog = new OpenFileDialog();
-            openFileDialog.Filter = "txt files (*.txt)|*.txt|comma serapated values (*.csv)|*.csv";
+            openFileDialog.Filter = filter;
             if (openFileDialog.ShowDialog() == true)
             {
                 FilePath = openFileDialog.FileName;
@@ -56,12 +56,11 @@ namespace WPFPractice.Model
             }
             return false;
         }
-
-        public bool SaveFileDialog()
+        public bool SaveFileDialog(string filter)
         {
             SaveFileDialog saveFileDialog = new SaveFileDialog();
             saveFileDialog.FileName = "result";
-            saveFileDialog.Filter = "txt files (*.txt)|*.txt|comma serapated values (*.csv)|*.csv";
+            saveFileDialog.Filter = filter;
             if (saveFileDialog.ShowDialog() == true)
             {
                 FilePath = saveFileDialog.FileName;
@@ -73,6 +72,5 @@ namespace WPFPractice.Model
         {
             MessageBox.Show(message);
         }
-
     }
 }

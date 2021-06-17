@@ -20,5 +20,4 @@ namespace WPFPractice.Model
         /// </summary>
         public ObservableCollection<string> ValuesList { get; set; }
     }
-    //Rem: [solved] комментарии
 }

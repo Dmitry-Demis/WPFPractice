@@ -36,19 +36,6 @@ namespace WPFPractice.ViewModel
         public ObservableCollection<Parameter> Parameters { get; set; } = new ObservableCollection<Parameter>();
 
         /// <summary>
-        /// Name - a name of a parameter
-        /// </summary>
-        private string _name;
-        public string Name
-        {
-            get => _name;
-            set
-            {
-                SetProperty(ref _name, value);
-            }
-        }
-
-        /// <summary>
         /// CurrentParameter - a selected parameter in a datatable shows here
         /// </summary>
         private Parameter _currentParameter; 
@@ -208,7 +195,7 @@ namespace WPFPractice.ViewModel
         {
             try
             {
-                if (dialogService.SaveFileDialog() == true)
+                if (dialogService.SaveFileDialog("demo test format file (*.dtff)|*.dtff") == true)
                 {
                     fileService.Save(dialogService.FilePath, Parameters.ToList());
                     dialogService.ShowMessageBoxDialog("Файл сохранен");
@@ -248,7 +235,7 @@ namespace WPFPractice.ViewModel
         {
             try
             {
-                if (dialogService.OpenFileDialog() == true)
+                if (dialogService.OpenFileDialog("demo test format file (*.dtff)|*.dtff") == true)
                 {
                     var parameters = fileService.Open(dialogService.FilePath);
                     Parameters.Clear();
@@ -274,10 +261,11 @@ namespace WPFPractice.ViewModel
                     (
                     _closeWindowCommand = new RelayCommand(() =>
                     {
-                        if (Save())
+                        if (dialogService.ShowMessageBoxDialog("Сохранение изменений", $"Хотите ли вы сохранить изменения перед выходом?") == MessageBoxResult.Yes)  
                         {
-                            Close?.Invoke();
-                        }                       
+                            Save();                            
+                        }
+                        Close?.Invoke();
                     }));
             }
         }
