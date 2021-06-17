@@ -10,8 +10,14 @@ using WPFPractice.Interfaces;
 
 namespace WPFPractice.ViewModel
 {
-    public class MainWindowViewModel : BaseViewModel
+    public class MainWindowViewModel : BaseViewModel, ICloseWindows
     {
+        /// <summary>
+        /// ICloseWindows realization
+        /// </summary>
+        public Action Close { get; set; }
+        public bool CanClose() => true;
+
         /// <summary>
         /// Services
         /// </summary>
@@ -95,6 +101,7 @@ namespace WPFPractice.ViewModel
                            {
                                if (dialogService.ShowMessageBoxDialog("Удаление элемента из таблицы", $"Вы правда хотите удалить элемент {CurrentParameter.Name}?") == MessageBoxResult.Yes)
                                    Parameters.Remove(CurrentParameter);
+                               OnPropertyChanged(nameof(IsTableEmpty));
                            },
                            () =>
                            {
@@ -190,21 +197,35 @@ namespace WPFPractice.ViewModel
                 return _saveFileDialogCommand ??
                        (_saveFileDialogCommand = new RelayCommand(() =>
                        {
-                           try
-                           {
-                               if (dialogService.SaveFileDialog()==true)
-                               {
-                                   fileService.Save(dialogService.FilePath, Parameters.ToList());
-                                   dialogService.ShowMessageBoxDialog("Файл сохранен");
-                               }
-                           }
-                           catch (Exception ex)
-                           {
-                               dialogService.ShowMessageBoxDialog(ex.Message);
-                           }                          
+                           Save();
                        }));
             }
         }
+        /// <summary>
+        /// A save method for the SaveFileDialogCommand
+        /// </summary>
+        public bool Save()
+        {
+            try
+            {
+                if (dialogService.SaveFileDialog() == true)
+                {
+                    fileService.Save(dialogService.FilePath, Parameters.ToList());
+                    dialogService.ShowMessageBoxDialog("Файл сохранен");
+                    return true;
+                }
+                    return false;                
+            }
+            catch (Exception ex)
+            {
+                dialogService.ShowMessageBoxDialog(ex.Message);
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// A command, which allows to open a file dialogue
+        /// </summary>
         private RelayCommand<Parameter> _openFileDialogCommand;
         public RelayCommand<Parameter> OpenFileDialogCommand
         {
@@ -213,22 +234,51 @@ namespace WPFPractice.ViewModel
                 return _openFileDialogCommand ??
                   (_openFileDialogCommand = new RelayCommand<Parameter>((param) =>
                   {
-                      try
-                      {
-                          if (dialogService.OpenFileDialog() == true)
-                          {
-                              var parameters = fileService.Open(dialogService.FilePath);
-                              Parameters.Clear();
-                              foreach (var p in parameters)
-                                  Parameters.Add(p);
-                              dialogService.ShowMessageBoxDialog("Файл открыт");
-                          }
-                      }
-                      catch (Exception ex)
-                      {
-                          dialogService.ShowMessageBoxDialog(ex.Message);
-                      }
+                      Open();
+                      OnPropertyChanged(nameof(IsTableEmpty));
+                      //dialogService.ShowMessageBoxDialog("Файл открыт");
                   }));
+            }
+        }
+
+        /// <summary>
+        /// An open method for the OpenFileDialogCommand
+        /// </summary>
+        private void Open()
+        {
+            try
+            {
+                if (dialogService.OpenFileDialog() == true)
+                {
+                    var parameters = fileService.Open(dialogService.FilePath);
+                    Parameters.Clear();
+                    foreach (var p in parameters)
+                        Parameters.Add(p);                    
+                }
+            }
+            catch (Exception ex)
+            {
+                dialogService.ShowMessageBoxDialog(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// A command, which allows to close a window
+        /// </summary>
+        private RelayCommand _closeWindowCommand;
+        public RelayCommand CloseWindowCommand 
+        {
+            get
+            {
+                return _closeWindowCommand ??
+                    (
+                    _closeWindowCommand = new RelayCommand(() =>
+                    {
+                        if (Save())
+                        {
+                            Close?.Invoke();
+                        }                       
+                    }));
             }
         }
     }

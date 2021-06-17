@@ -15,6 +15,7 @@
     <Window.InputBindings>
         <KeyBinding Command="{Binding OpenFileDialogCommand}" Modifiers="Ctrl" Key="O"/>
         <KeyBinding Command="{Binding SaveFileDialogCommand}" Modifiers="Ctrl" Key="S"/>
+        <KeyBinding Command="{Binding CloseWindowCommand}" Modifiers="Alt" Key="F4"/>
     </Window.InputBindings>
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="VisibilityConverter"/>
@@ -26,7 +27,7 @@
                 <MenuItem  Header="Сохранить" InputGestureText="Ctrl+S" Command="{Binding SaveFileDialogCommand}"/>
                 <Separator/>
                 <MenuItem  Header="Закрыть"
-                          InputGestureText="Alt+F4"/>
+                          InputGestureText="Alt+F4" Command="{Binding CloseWindowCommand}"/>
             </MenuItem>
             <MenuItem Header="_Изменить">
                 <MenuItem Command="ApplicationCommands.Copy" Header="Копировать"/>

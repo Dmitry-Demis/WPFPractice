@@ -26,9 +26,7 @@ namespace WPFPractice.View
         public MainWindow()
         {
             InitializeComponent();
-            //DataContext = new MainWindowViewModel(new DefaultDialogService(), new JsonFileService()); //Rem: в чем трудность?
         }
-
     }
    
 }
