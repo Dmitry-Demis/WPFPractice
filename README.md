@@ -1,4 +1,14 @@
 # WPFPractice
+
+## v. 1.0.3
+1. Some changes with file.filter
+2. Asking about savings when you want to close an application
+
+## v. 1.0.2
+### MainWindowViewModel.cs
+1. Adding Save when "Close" in the menu is pressed
+2. "X" closes the window without savings
+
 ## v. 1.0.1
 ### Parameter.cs
 1. Adding comments
