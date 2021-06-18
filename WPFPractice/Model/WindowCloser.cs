@@ -29,15 +29,22 @@ namespace WPFPractice.Model
             {
                 window.Loaded += (s, ev) =>
                 {
+                    bool closeRequestFromVM = false;
                     if (window.DataContext is ICloseWindows vm)
                     {
-                        vm.Close += () =>
+                        vm.Closed += () =>
                         {
+                            closeRequestFromVM = true;
                             window.Close();
                         };
-                        window.Closing += (se, eve) =>
+                        window.Closing += (_s, _e) =>
                         {
-                            eve.Cancel = !vm.CanClose();
+                            _e.Cancel = !closeRequestFromVM;
+                            window.Dispatcher.BeginInvoke((Action)(() =>
+                            {
+                                if (!closeRequestFromVM)
+                                    vm.Close();
+                            }));
                         };
                     }
                 };

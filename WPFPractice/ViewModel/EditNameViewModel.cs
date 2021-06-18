@@ -6,8 +6,11 @@ namespace WPFPractice.ViewModel
 {
     public class EditNameViewModel : BaseViewModel, ICloseWindows
     {
-        public Action Close { get; set; }
-        public bool CanClose() => true;
+        public event Action Closed;
+        public void Close()
+        {
+            Closed?.Invoke();
+        }
 
         /// <summary>
         /// A name of a parameter
@@ -37,7 +40,7 @@ namespace WPFPractice.ViewModel
         private RelayCommand _closeCommand;
         public RelayCommand CloseCommand
             => _closeCommand ?? 
-            (_closeCommand = new RelayCommand(() => Close?.Invoke(), () => !IsNameEmpty));
+            (_closeCommand = new RelayCommand(() => Close(), () => !IsNameEmpty));
        
         /// <summary>
         /// Allows to cancel input without saving
@@ -45,6 +48,6 @@ namespace WPFPractice.ViewModel
         private RelayCommand _cancelCommand;
         public RelayCommand CancelCommand
             => _cancelCommand ?? 
-            (_cancelCommand = new RelayCommand(() => {Close?.Invoke(); Name = null; }));
+            (_cancelCommand = new RelayCommand(() => {Close(); Name = null; }));
     }   
 }

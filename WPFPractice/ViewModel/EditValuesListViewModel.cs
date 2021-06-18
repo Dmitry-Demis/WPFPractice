@@ -9,8 +9,12 @@ namespace WPFPractice.ViewModel
 {
     class EditValuesListViewModel : BaseViewModel, ICloseWindows
     {
-        public Action Close { get; set; }
-        public bool CanClose() => true;
+        public event Action Closed;
+
+        public void Close()
+        {
+            Closed?.Invoke();
+        }
 
         /// <summary>
         /// DialogService for showing dialogues
@@ -194,7 +198,7 @@ namespace WPFPractice.ViewModel
                     {
                         parameter.ValuesList.Add(item);
                     }
-                    Close?.Invoke();
+                    Close();
                 }, 
                 () => ValueList?.Count>0));
 
@@ -204,6 +208,6 @@ namespace WPFPractice.ViewModel
         private RelayCommand _cancelCommand;
         public RelayCommand CancelCommand
             => _cancelCommand ?? (_cancelCommand =
-            new RelayCommand(() => {Close?.Invoke(); ValueList = null;}));        
+            new RelayCommand(() => {Close(); ValueList = null;}));        
     }
 }

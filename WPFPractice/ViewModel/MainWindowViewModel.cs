@@ -15,8 +15,23 @@ namespace WPFPractice.ViewModel
         /// <summary>
         /// ICloseWindows realization
         /// </summary>
-        public Action Close { get; set; }
-        public bool CanClose() => true;
+        public event Action Closed;
+
+        public void Close()
+        {
+            if (dialogService.ShowMessageBoxDialog("Сохранение изменений", $"Хотите ли вы сохранить изменения перед выходом?") == MessageBoxResult.Yes)
+            {
+                if (Save())
+                {
+                    Closed?.Invoke();
+                }
+            }
+            else
+            {
+                Closed?.Invoke();
+            }
+                  
+        }
 
         /// <summary>
         /// Services
@@ -261,11 +276,7 @@ namespace WPFPractice.ViewModel
                     (
                     _closeWindowCommand = new RelayCommand(() =>
                     {
-                        if (dialogService.ShowMessageBoxDialog("Сохранение изменений", $"Хотите ли вы сохранить изменения перед выходом?") == MessageBoxResult.Yes)  
-                        {
-                            Save();                            
-                        }
-                        Close?.Invoke();
+                      Close();
                     }));
             }
         }
