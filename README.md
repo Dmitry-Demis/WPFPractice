@@ -1,5 +1,8 @@
 # WPFPractice
 
+## v. 1.0.4
+1. Adding closing with asking what to do when the button "X" is pressed
+
 ## v. 1.0.3
 1. Some changes with file.filter
 2. Asking about savings when you want to close an application
